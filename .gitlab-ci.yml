@@ -1,0 +1,27 @@
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'  # Executa o pipeline apenas na branch main
+
+stages:
+  - build
+  - deploy
+
+create_image:
+  stage: build
+  tags:
+    - oci
+  script:
+    - docker build -t vsantosmt/portfolio-test:1.0 app/.
+    - docker push vsantosmt/portfolio-test:1.0
+
+execute_image:
+  stage: deploy
+  tags:
+    - oci
+  needs:
+    - create_image
+  before_script:
+    - docker rm -f $(docker ps -aq)
+  script:
+    - docker run -dti --name webserver -p 80:80 vsantosmt/portfolio-test:1.0
+  
