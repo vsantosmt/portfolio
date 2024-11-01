@@ -11,7 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'roboto'
+    font-family: 'roboto';
 }
 
 header {
@@ -105,13 +105,13 @@ p {
 
 .container {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column; /* Alinha os itens em coluna por padrão */
+    align-items: center; /* Centraliza os itens horizontalmente */
     gap: 20px; /* Espaçamento entre a imagem e o texto */
 }
 
 .text-content {
-    text-align: left;
+    text-align: center; /* Centraliza o texto */
 }
 
 h1 {
@@ -141,4 +141,82 @@ p {
     color: #ffffff;
     margin: 10px 0 20px;
     line-height: 1.5;
+}
+
+/* Media query para dispositivos com largura mínima de 769px (notebooks e maiores) */
+@media (min-width: 769px) {
+    .container {
+        flex-direction: row; /* Alinha os itens em linha */
+        justify-content: center; /* Centraliza os itens horizontalmente */
+    }
+
+    .text-content {
+        text-align: left; /* Alinha o texto à esquerda */
+    }
+}
+
+/* Media query para dispositivos com largura máxima de 768px (tablets e smartphones) */
+@media (max-width: 768px) {
+    header nav ul {
+        flex-direction: column;
+    }
+
+    header nav ul li {
+        margin: 10px 0;
+    }
+
+    .profile-photo {
+        width: 200px;
+        height: 200px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    .text-content h1 {
+        font-size: 60px;
+    }
+
+    .text-content p {
+        font-size: 30px;
+    }
+}
+
+/* Media query para dispositivos com largura máxima de 480px (smartphones pequenos) */
+@media (max-width: 480px) {
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .text-content h1 {
+        font-size: 40px;
+    }
+
+    .text-content p {
+        font-size: 20px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button {
+        width: 100%;
+        text-align: center;
+    }
 }
