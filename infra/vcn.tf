@@ -11,3 +11,5 @@ resource "oci_core_subnet" "subnet" {
   compartment_id             = var.compartment_id
   prohibit_public_ip_on_vnic = false
 }
+
+# criar inboud rules, liberacao porta 80 http
