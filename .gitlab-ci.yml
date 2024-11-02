@@ -27,5 +27,5 @@ execute_image:
   before_script:
     - docker rm -f $(docker ps -aq) #remove containers ativos
   script:
-    - docker run -dti --name webserver -p 80:80 vsantosmt/portfolio:$VERSION
+    - docker run -dti --name webserver -p 5000:5000 vsantosmt/portfolio:$VERSION
   
