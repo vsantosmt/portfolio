@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      context: ./backend  # Pasta onde está o Dockerfile do Flask
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+  
+  frontend:
+    build:
+      context: ./frontend  # Pasta onde está o Dockerfile do Vite
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner
