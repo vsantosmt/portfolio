@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 
 infra/.terraform
-infra/.terraform.lock.hcl
+infra/.terraform.lock.hcl 
+#
