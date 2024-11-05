@@ -25,4 +25,5 @@ dist-ssr
 
 infra/.terraform
 infra/.terraform.lock.hcl 
-#
+
+app/

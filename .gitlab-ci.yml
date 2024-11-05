@@ -3,7 +3,7 @@ workflow:
     - if: '$CI_COMMIT_BRANCH == "main"'  # Executa o pipeline apenas na branch main
 
 variables:
-  VERSION: "2.0" #
+  VERSION: "2.0"
 
 stages:
   - build
