@@ -1,0 +1,222 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'roboto';
+}
+
+header {
+    width: 100%;
+    background-color: #1a1a1a;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    text-align: center;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+header nav ul li a:hover {
+    color: #aaa;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-top: 100px; /* Espaço para o header fixo */
+}
+
+.intro {
+    text-align: center;
+}
+
+.profile-photo {
+    width: 250px; /* Ajuste o tamanho da foto conforme desejado */
+    height: 250px;
+    border-radius: 50%;
+    border: 5px solid #ffffff; /* Borda branca */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra opcional para destacar */
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+p {
+    font-size: 24px;
+    margin: 10px 0 20px;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    border: 1px solid #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+    background-color: #fff;
+    color: #1a1a1a;
+}
+
+.profile-photo {
+    width: 400px; /* Ajuste para o tamanho desejado */
+    height: 400px; /* Ajuste para o tamanho desejado */
+    border-radius: 50%;
+    border: 2px solid #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Alinha os itens em coluna por padrão */
+    align-items: center; /* Centraliza os itens horizontalmente */
+    gap: 20px; /* Espaçamento entre a imagem e o texto */
+}
+
+.text-content {
+    text-align: center; /* Centraliza o texto */
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+p {
+    font-size: 24px;
+    margin: 10px 0 20px;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+ 
+.text-content h1 {
+    font-size: 80px; /* Tamanho maior para o nome */
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+}
+
+.text-content p {
+    font-size: 40px; /* Tamanho maior para a descrição */
+    color: #ffffff;
+    margin: 10px 0 20px;
+    line-height: 1.5;
+}
+
+/* Media query para dispositivos com largura mínima de 769px (notebooks e maiores) */
+@media (min-width: 769px) {
+    .container {
+        flex-direction: row; /* Alinha os itens em linha */
+        justify-content: center; /* Centraliza os itens horizontalmente */
+    }
+
+    .text-content {
+        text-align: left; /* Alinha o texto à esquerda */
+    }
+}
+
+/* Media query para dispositivos com largura máxima de 768px (tablets e smartphones) */
+@media (max-width: 768px) {
+    header nav ul {
+        flex-direction: column;
+    }
+
+    header nav ul li {
+        margin: 10px 0;
+    }
+
+    .profile-photo {
+        width: 200px;
+        height: 200px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    .text-content h1 {
+        font-size: 60px;
+    }
+
+    .text-content p {
+        font-size: 30px;
+    }
+}
+
+/* Media query para dispositivos com largura máxima de 480px (smartphones pequenos) */
+@media (max-width: 480px) {
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .text-content h1 {
+        font-size: 40px;
+    }
+
+    .text-content p {
+        font-size: 20px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button {
+        width: 100%;
+        text-align: center;
+    }
+}
