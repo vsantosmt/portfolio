@@ -27,7 +27,7 @@ const Hero = () => {
 
     // Função para baixar o CV
     const handleDownloadCV = () => {
-        window.open('http://localhost:5000/download_cv', '_blank'); // Mude a URL conforme necessário
+        window.open('http://204.216.148.17:5000/download_cv', '_blank'); // Mude a URL conforme necessário
     };
 
     // Função para o botão de contato
