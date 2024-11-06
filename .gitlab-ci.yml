@@ -9,22 +9,42 @@ stages:
   - build
   - deploy
 
-create_image:
+build_frontend:
   stage: build
   tags:
     - oci
   script:
-    - docker build -t vsantosmt/portfolio:$VERSION app/.
-    - docker push vsantosmt/portfolio:$VERSION
+    - docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
+    # - docker push vsantosmt/portfolio:$VERSION
 
-execute_image:
+build_backend:
+  stage: build
+  tags:
+    - oci
+  needs:
+    - build_frontend
+  script:
+    - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
+    # - docker push vsantosmt/portfolio:$VERSION
+
+push_image:
+  stage: build
+  tags:
+    - oci
+  needs:
+    - build_backend
+  script:
+    - docker push vsantosmt/portfolio-frontend:$VERSION
+    - docker push vsantosmt/portfolio-backend:$VERSION
+      
+execute_container:
   stage: deploy
   tags:
     - oci
   needs:
-    - create_image
+    - push_image
   before_script:
     - docker rm -f $(docker ps -aq)
   script:
-    - docker run -dti --name webserver -p 80:80 vsantosmt/portfolio:$VERSION
-  
+    - docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:$VERSION
+    - docker run -dti --name webserver-backend -p 5000:5000 vsantosmt/portfolio-backend:$VERSION
