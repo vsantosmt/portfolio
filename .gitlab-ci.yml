@@ -16,7 +16,6 @@ build_frontend:
     - oci
   script:
     - docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
-    # - docker push vsantosmt/portfolio:$VERSION
 
 build_backend:
   stage: build
@@ -26,13 +25,13 @@ build_backend:
     - build_frontend
   script:
     - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
-    # - docker push vsantosmt/portfolio:$VERSION
 
 push_image:
   stage: build
   tags:
     - oci
   needs:
+    - build_frontend
     - build_backend
   script:
     - docker push vsantosmt/portfolio-frontend:$VERSION
