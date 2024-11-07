@@ -6,11 +6,13 @@ services:
     build:
       context: ./backend  # Pasta onde está o Dockerfile do Flask
       dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
     environment:
       - VIRTUAL_HOST=vgsenterprise.online
       - VIRTUAL_PORT=5000
+      - LETSENCRYPT_HOST=vgsenterprise.online
+      - LETSENCRYPT_EMAIL=santos.viniciusmt@gmail.com
     networks:
       - proxy
 
@@ -19,11 +21,13 @@ services:
     build:
       context: ./frontend  # Pasta onde está o Dockerfile do Vite
       dockerfile: Dockerfile
-    ports:
-      - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner.
+    # ports:
+    #   - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner.
     environment:
       - VIRTUAL_HOST=vgsenterprise.online
       - VIRTUAL_PORT=5173
+      - LETSENCRYPT_HOST=vgsenterprise.online
+      - LETSENCRYPT_EMAIL=santos.viniciusmt@gmail.com
     networks:
       - proxy
 
