@@ -1,14 +1,61 @@
+version: "3.5"
+
 services:
+  # Serviço do Backend (Flask)
   backend:
     build:
       context: ./backend  # Pasta onde está o Dockerfile do Flask
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
-  
+    environment:
+      - VIRTUAL_HOST=vgsenterprise.online
+      - VIRTUAL_PORT=5000
+    networks:
+      - proxy
+
+  # Serviço do Frontend (Vite)
   frontend:
     build:
       context: ./frontend  # Pasta onde está o Dockerfile do Vite
       dockerfile: Dockerfile
     ports:
-      - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner
+      - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner.
+    environment:
+      - VIRTUAL_HOST=vgsenterprise.online
+      - VIRTUAL_PORT=5173
+    networks:
+      - proxy
+
+  # Serviço Nginx como Proxy Reverso
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: nginxproxy/nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+      - ./vhost:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+    networks:
+      - proxy
+    privileged: true
+
+  # Serviço Let's Encrypt
+  letsencrypt:
+    container_name: letsencrypt
+    image: nginxproxy/acme-companion
+    restart: always
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy

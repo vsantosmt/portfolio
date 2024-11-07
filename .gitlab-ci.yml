@@ -1,6 +1,7 @@
 workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'  # Executa o pipeline apenas na branch main
+    - if: '$CI_COMMIT_BRANCH == "qa"' # Executa o pipeline apenas na branch qa
 
 variables:
   VERSION: "2.0"
