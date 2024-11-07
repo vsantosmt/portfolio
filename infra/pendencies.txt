@@ -27,4 +27,6 @@ sudo apt install certbot python3-certbot-apache  # Para Apache"
 
 "sudo certbot --nginx"
 
+VALIDAR SE PRECISA DISSO ACIMA MESMO
+
 
