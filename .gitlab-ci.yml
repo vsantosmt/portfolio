@@ -25,6 +25,7 @@ build_backend:
     - build_frontend
   script:
     - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
+    - docker build -t vsantosmt/portfolio-backend:$VERSION . #easypanel
 
 push_image:
   stage: build
@@ -55,8 +56,8 @@ execute_container:
             echo "Nenhum container em execução encontrado. Pulando remoção..."
           fi
   script:
-    - docker pull easypanel/easypanel
+    # - docker pull easypanel/easypanel
     - docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:$VERSION
     - docker run -dti --name webserver-backend -p 5000:5000 vsantosmt/portfolio-backend:$VERSION
-    - docker run -d -p 5174:5173 -p 5002:5000 --name easy-panel easypanel/easypanel
+    # - docker run -d -p 5174:5173 -p 5002:5000 --name easy-panel easypanel/easypanel
 
