@@ -44,7 +44,16 @@ execute_container:
   needs:
     - push_image
   before_script:
-    - docker rm -f $(docker ps -aq)
+     - |
+          CONTAINERS_RUNNING=$(docker ps -q)
+
+          if [ -n "$CONTAINERS_RUNNING" ]; then
+            echo "Containers em execução encontrados. Removendo containers..."
+            docker stop $CONTAINERS_RUNNING
+            docker rm -f $CONTAINERS_RUNNING
+          else
+            echo "Nenhum container em execução encontrado. Pulando remoção..."
+          fi
   script:
     - docker pull easycorp/easy-panel
     - docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:$VERSION
