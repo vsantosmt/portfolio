@@ -55,7 +55,7 @@ execute_container:
             echo "Nenhum container em execução encontrado. Pulando remoção..."
           fi
   script:
-    - docker pull easycorp/easy-panel
+    - docker pull easypanel/easypanel
     - docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:$VERSION
     - docker run -dti --name webserver-backend -p 5000:5000 vsantosmt/portfolio-backend:$VERSION
     - docker run -d -p 5173:5173 -p 5000:5000 --name easy-panel easycorp/easy-panel
