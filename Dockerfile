@@ -7,9 +7,6 @@ WORKDIR /app
 # Copie os arquivos do backend para o container
 COPY . .
 
-# Instale as dependências necessárias (supondo que você tenha um package.json)
-RUN npm install
-
 # Exponha as portas necessárias
 EXPOSE 5173 5000
 
