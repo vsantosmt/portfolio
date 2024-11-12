@@ -21,21 +21,31 @@ services:
     networks:
       - app-network
 
-  # Serviço EasyPanel
-  easypanel:
+  nginx:
     build:
-      context: ./app
+      context: ./nginx
       dockerfile: Dockerfile
-    environment:
-      - BACKEND_URL=http://backend:5000  # Variável de ambiente apontando para o backend Python
-      - FRONTEND_URL=http://frontend:80  # Variável de ambiente apontando para o frontend
-    ports:
-      - "5174:5173"  # EasyPanel estará acessível na porta 5174
+    ports: 
+      - "80:80"
+      - "443:443"
     networks:
       - app-network
-    depends_on:
-      - backend
-      - frontend
+
+  # Serviço EasyPanel
+  # easypanel:
+  #   build:
+  #     context: ./app
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - BACKEND_URL=http://backend:5000  # Variável de ambiente apontando para o backend Python
+  #     - FRONTEND_URL=http://frontend:80  # Variável de ambiente apontando para o frontend
+  #   ports:
+  #     - "5174:5173"  # EasyPanel estará acessível na porta 5174
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - backend
+  #     - frontend
 
 networks:
   app-network:
