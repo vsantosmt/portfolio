@@ -9,7 +9,7 @@ services:
     ports:
       - "5000:5000"  # Mapeando a porta 5000 do host para a porta 5000 do contêiner
     networks:
-      - app-network
+      - proxy
 
   # Serviço do Frontend (Vite)
   frontend:
@@ -19,7 +19,7 @@ services:
     ports:
       - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner
     networks:
-      - app-network
+      - proxy
 
   nginx:
     build:
@@ -29,7 +29,7 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      - app-network
+      - proxy
 
   # Serviço EasyPanel
   # easypanel:
@@ -47,9 +47,9 @@ services:
   #     - backend
   #     - frontend
 
-networks:
-  app-network:
-    driver: bridge
+# networks:
+#   app-network:
+#     driver: bridge
 
 
 # old
@@ -113,7 +113,7 @@ networks:
 #     networks:
 #       - proxy
 
-# networks:
-#   proxy:
-#     name: proxy
+networks:
+  proxy:
+    name: proxy
 
