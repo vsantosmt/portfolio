@@ -5,7 +5,7 @@ FROM node:18-slim
 WORKDIR /app
 
 # Copie os arquivos do diretório atual para o contêiner (garante que backend.js e outros arquivos sejam copiados)
-COPY ./easypanel /app
+COPY . .
 
 # Instale as dependências necessárias
 RUN apt-get update && apt-get install -y \
