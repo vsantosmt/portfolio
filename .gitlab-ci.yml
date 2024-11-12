@@ -25,7 +25,7 @@ build_backend:
     - build_frontend
   script:
     - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
-    - docker build -t vsantosmt/portfolio-easypanel:$VERSION .
+    - docker build -t vsantosmt/portfolio-easypanel:$VERSION ./app
 
 push_image:
   stage: build
