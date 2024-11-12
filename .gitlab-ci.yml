@@ -13,14 +13,14 @@ stages:
 build_frontend:
   stage: build
   tags:
-    - oci
+    - port-oci
   script:
     - docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
 
 build_backend:
   stage: build
   tags:
-    - oci
+    - port-oci
   needs:
     - build_frontend
   script:
@@ -30,7 +30,7 @@ build_backend:
 build_nginx:
   stage: build
   tags:
-    - oci
+    - port-oci
   needs:
     - build_backend
   script:
@@ -39,7 +39,7 @@ build_nginx:
 push_image:
   stage: build
   tags:
-    - oci
+    - port-oci
   needs:
     - build_frontend
     - build_backend
@@ -51,7 +51,7 @@ push_image:
 execute_container:
   stage: deploy
   tags:
-    - oci
+    - port-oci
   needs:
     - push_image
   before_script:

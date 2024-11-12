@@ -19,14 +19,7 @@ sudo apt-get update"
 "curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash"
 "sudo apt install gitlab-runner"
 
-#Certbot - https
-"sudo apt update
-sudo apt install certbot python3-certbot-nginx  # Para Nginx
-# ou
-sudo apt install certbot python3-certbot-apache  # Para Apache"
-
-"sudo certbot --nginx"
-
-VALIDAR SE PRECISA DISSO ACIMA MESMO
+sudo usermod -aG docker ubuntu
+sudo usermod -aG docker gitlab-runner
 
 

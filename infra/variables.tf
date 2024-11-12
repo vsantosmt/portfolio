@@ -35,7 +35,7 @@ variable "cidr_block_subnet" {
 }
 
 variable "display_name_subnet" {
-  default = "my_subnet"
+  default = "subnet-prd"
 }
 
 variable "availability_domain" {
@@ -47,9 +47,21 @@ variable "shape" {
 }
 
 variable "display_name_instance" {
-  default = "port-prd"
+  default = "port-prd01"
 }
 
 variable "source_id" {
   default = "ocid1.image.oc1.sa-vinhedo-1.aaaaaaaawcyxswo24oly65otdef2wzpc33yyzxrgid3zd53p37n4u32qikla"
+}
+
+variable "route_table_display_name" {
+  default = "route-table-prd"
+}
+
+variable "internet_gateway_display_name" {
+  default = "internet-gateway-prd"
+}
+
+variable "nat_gateway_display_name" {
+  default = "nat-gateway-prd"
 }

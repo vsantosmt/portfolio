@@ -1,10 +1,10 @@
 terraform {
   required_providers {
     oci = {
-      source = "oracle/oci"
-      version = "6.15.0"
-      }
+      source  = "oracle/oci"
+      version = "6.17.0"
     }
+  }
 
   backend "azurerm" {
     resource_group_name  = "rg-terraform-state"
