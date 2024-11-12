@@ -26,4 +26,4 @@ dist-ssr
 infra/.terraform
 infra/.terraform.lock.hcl 
 
-app/package.json
+# app/package.json

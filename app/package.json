@@ -1,0 +1,22 @@
+{
+    "name": "easy-panel",
+    "version": "1.0.0",
+    "description": "EasyPanel - Interface administrativa para o backend",
+    "main": "backend.js",
+    "scripts": {
+      "start": "node backend.js",           
+      "dev": "node backend.js"              
+    },
+    "dependencies": {
+      "express": "^4.17.1",                 
+      "body-parser": "^1.19.0",             
+      "cors": "^2.8.5",                     
+      "mongoose": "^5.9.15"                 
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.4"                   
+    },
+    "author": "Você",
+    "license": "MIT"
+  }
+  
