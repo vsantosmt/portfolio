@@ -27,7 +27,9 @@ services:
 
   # Serviço EasyPanel
   easypanel:
-    image: vsantosmt/portfolio-easypanel:2.0  # Imagem personalizada do EasyPanel
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     environment:
       - BACKEND_URL=http://backend:5000  # Variável de ambiente apontando para o backend Python
       - FRONTEND_URL=http://frontend:5173  # Variável de ambiente apontando para o frontend
