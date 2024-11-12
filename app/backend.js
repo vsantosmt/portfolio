@@ -17,12 +17,13 @@ app.get('/', (req, res) => {
 
 // Configurando a comunicação com o backend Python (API Flask)
 const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000'; // URL do backend Python
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173'; // URL do frontend
 
 // Requisição para o backend Python
 app.get('/backend-data', async (req, res) => {
   try {
     // Enviando uma requisição para o seu backend Python
-    const response = await axios.get(`${backendUrl}/api/some-endpoint`);
+    const response = await axios.get(`${backendUrl}/download_cv`);
     res.json(response.data);
   } catch (error) {
     console.error('Erro ao se comunicar com o backend Python:', error);
@@ -33,4 +34,4 @@ app.get('/backend-data', async (req, res) => {
 // Inicia o servidor na porta 5174, já que 5173 está ocupada pelo frontend
 app.listen(5174, () => {
     console.log('EasyPanel rodando na porta 5174');
-  });
+});
