@@ -1,17 +1,17 @@
-# Usando a imagem oficial do Easy Panel como base
-FROM easypanel/easypanel:latest
+# Usar a imagem oficial do Node.js como base
+FROM node:16
 
-# Defina variáveis de ambiente, caso necessário
-# ENV VERSION="1.0.0"  # Aqui você pode definir a versão ou outras variáveis de ambiente
+# Defina o diretório de trabalho
+WORKDIR /app
 
-# Instalar pacotes ou dependências adicionais (se necessário)
-# RUN apt-get update && apt-get install -y <pacotes>
+# Copie os arquivos do backend para o container
+COPY . .
 
-# Configuração de volumes, se necessário
-# VOLUME ["/path/to/config", "/path/to/logs"]
+# Instale as dependências necessárias (supondo que você tenha um package.json)
+RUN npm install
 
-# Expor as portas que o Easy Panel vai usar
+# Exponha as portas necessárias
 EXPOSE 5173 5000
 
-# Comando para iniciar o Easy Panel (pode ser alterado se necessário)
+# Comando para rodar o backend
 CMD ["node", "backend.js"]

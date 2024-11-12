@@ -46,7 +46,7 @@ execute_container:
     - push_image
   before_script:
      - |
-          CONTAINERS_RUNNING=$(docker ps -q)
+          CONTAINERS_RUNNING=$(docker ps -aq)
 
           if [ -n "$CONTAINERS_RUNNING" ]; then
             echo "Containers em execução encontrados. Removendo containers..."
