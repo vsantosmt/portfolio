@@ -23,4 +23,4 @@ RUN npm install
 EXPOSE 5173 5000
 
 # Comando para rodar o EasyPanel (ajuste conforme seu ambiente)
-CMD ["npm", "start"]  # Isso depende de como o EasyPanel ou a aplicação Node.js está configurada
+CMD npm start
