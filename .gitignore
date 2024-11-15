@@ -23,7 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-infra/.terraform
-infra/.terraform.lock.hcl 
+infra/oci/.terraform
+infra/oci/.terraform.lock.hcl 
+
+infra/gcp/.terraform
+infra/gcp/.terraform.lock.hcl
 
 # app/package.json

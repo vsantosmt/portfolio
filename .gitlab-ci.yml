@@ -5,6 +5,7 @@ workflow:
 
 variables:
   VERSION: "2.0"
+  PROJECT_TAG: "port-oci"
 
 stages:
   - build
@@ -13,14 +14,14 @@ stages:
 build_frontend:
   stage: build
   tags:
-    - port-oci
+    - $PROJECT_TAG
   script:
     - docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
 
 build_backend:
   stage: build
   tags:
-    - port-oci
+    - $PROJECT_TAG
   needs:
     - build_frontend
   script:
@@ -30,7 +31,7 @@ build_backend:
 build_nginx:
   stage: build
   tags:
-    - port-oci
+    - $PROJECT_TAG
   needs:
     - build_backend
   script:
@@ -39,7 +40,7 @@ build_nginx:
 push_image:
   stage: build
   tags:
-    - port-oci
+    - $PROJECT_TAG
   needs:
     - build_frontend
     - build_backend
@@ -51,7 +52,7 @@ push_image:
 execute_container:
   stage: deploy
   tags:
-    - port-oci
+    - $PROJECT_TAG
   needs:
     - push_image
   before_script:
