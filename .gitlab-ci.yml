@@ -5,7 +5,7 @@ workflow:
 
 variables:
   VERSION: "2.0"
-  PROJECT_TAG: "oci"
+  PROJECT_TAG: "port-oci"
 
 stages:
   - build
