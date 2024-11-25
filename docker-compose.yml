@@ -6,6 +6,7 @@ services:
     build:
       context: ./backend  # Pasta onde está o Dockerfile do Flask
       dockerfile: Dockerfile
+    container_name: webserver-backend
     ports:
       - "5000:5000"  # Mapeando a porta 5000 do host para a porta 5000 do contêiner
     networks:
@@ -16,6 +17,7 @@ services:
     build:
       context: ./frontend  # Pasta onde está o Dockerfile do Vite
       dockerfile: Dockerfile
+    container_name: webserver-frontend
     ports:
       - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner
     networks:
@@ -25,6 +27,7 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+    container_name: webserver-nginx
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
     ports: 
