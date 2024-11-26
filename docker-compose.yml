@@ -42,7 +42,9 @@ services:
 
   # Serviço do Certbot
   certbot:
-    image: certbot/certbot
+    build:
+      context: ./certbot
+      dockerfile: Dockerfile
     container_name: webserver-certbot
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
