@@ -23,20 +23,36 @@ services:
     networks:
       - proxy
 
+  # Serviço do Nginx
   nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: webserver-nginx
     volumes:
-      - ./frontend/dist:/usr/share/nginx/html
+      - ./frontend/dist:/usr/share/nginx/html  # Diretório do frontend
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Configuração personalizada do Nginx
+      - ./data/certbot/conf:/etc/letsencrypt  # Volume para os certificados
+      - ./data/certbot/www:/var/www/certbot  # Diretório para validação do Certbot
     ports: 
       - "80:80"
       - "443:443"
     networks:
       - proxy
 
+  # Serviço do Certbot
+  certbot:
+    image: certbot/certbot
+    container_name: webserver-certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - proxy
+    depends_on:
+      - nginx
+
 networks:
   proxy:
     name: proxy
-
