@@ -35,7 +35,7 @@ build_nginx_ssl:
     - build_backend
   script:
     - docker build -t vsantosmt/portfolio-nginx:$VERSION ./nginx
-    - docker build -t vsantosmt/portoflio-ssl:$VERSION ./certbot
+    # - docker build -t vsantosmt/portoflio-ssl:$VERSION ./certbot
 
 push_image:
   stage: build
@@ -48,7 +48,7 @@ push_image:
     - docker push vsantosmt/portfolio-frontend:$VERSION
     - docker push vsantosmt/portfolio-backend:$VERSION
     - docker push vsantosmt/portfolio-nginx:$VERSION
-    - docker push vsantosmt/portoflio-ssl:$VERSION
+    # - docker push vsantosmt/portoflio-ssl:$VERSION
       
 execute_container:
   stage: deploy
@@ -72,13 +72,13 @@ execute_container:
     - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
     - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION
 
-ssl_generate:
-  stage: deploy
-  tags:
-    - $PROJECT_TAG
-  needs:
-    - execute_container
-  script:
-    - docker run -dti --name webserver-certbot --network proxy -v /path/to/certbot/conf:/etc/letsencrypt -v /path/to/certbot/www:/var/www/certbot vsantosmt/portoflio-ssl:$VERSION certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online
+# ssl_generate:
+#   stage: deploy
+#   tags:
+#     - $PROJECT_TAG
+#   needs:
+#     - execute_container
+#   script:
+    # - docker run -dti --name webserver-certbot --network proxy -v /path/to/certbot/conf:/etc/letsencrypt -v /path/to/certbot/www:/var/www/certbot vsantosmt/portoflio-ssl:$VERSION certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online
 
 
