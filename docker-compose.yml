@@ -40,7 +40,7 @@ services:
     networks:
       - proxy
 
-  Serviço do Certbot
+  #Serviço do Certbot
   certbot:
     build:
       context: ./certbot
