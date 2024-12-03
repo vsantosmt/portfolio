@@ -68,9 +68,21 @@ execute_container:
             echo "Nenhum container em execução encontrado. Pulando remoção..."
           fi
   script:
-    - docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
-    - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
-    - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION
+    - docker-compose -f docker-compose.yml up -d
+    # - docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
+    # - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
+    # - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION
+
+ssl_generate:
+  stage: deploy
+  tags:
+    - $PROJECT_TAG
+  needs:
+    - execute_container
+  script:
+    - docker-compose run --rm certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
+    - docker-compose exec nginx nginx -s reload
+
 
 # ssl_generate:
 #   stage: deploy
