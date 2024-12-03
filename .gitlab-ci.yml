@@ -57,16 +57,26 @@ execute_container:
   needs:
     - push_image
   before_script:
-     - |
-          CONTAINERS_RUNNING=$(docker ps -aq)
+    - |
+         # Instalar Docker Compose se não estiver presente
+         if ! command -v docker-compose &> /dev/null
+         then
+             echo "Docker Compose não encontrado. Instalando..."
+             curl -sL https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+             chmod +x /usr/local/bin/docker-compose
+         else
+             echo "Docker Compose já está instalado."
+         fi
 
-          if [ -n "$CONTAINERS_RUNNING" ]; then
-            echo "Containers em execução encontrados. Removendo containers..."
-            docker stop $CONTAINERS_RUNNING
-            docker rm -f $CONTAINERS_RUNNING
-          else
-            echo "Nenhum container em execução encontrado. Pulando remoção..."
-          fi
+         # Remover containers antigos, se houver
+         CONTAINERS_RUNNING=$(docker ps -aq)
+         if [ -n "$CONTAINERS_RUNNING" ]; then
+           echo "Containers em execução encontrados. Removendo containers..."
+           docker stop $CONTAINERS_RUNNING
+           docker rm -f $CONTAINERS_RUNNING
+         else
+           echo "Nenhum container em execução encontrado. Pulando remoção..."
+         fi
   script:
     - docker-compose -f docker-compose.yml up -d
     # - docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
