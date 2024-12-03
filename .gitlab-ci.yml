@@ -11,54 +11,30 @@ stages:
   - build
   - deploy
 
-build_frontend:
+# Etapa para rodar o Docker Compose e construir as imagens (via compose)
+build_containers:
   stage: build
   tags:
     - $PROJECT_TAG
   script:
-    - docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
+    - docker-compose -f docker-compose.yml build  # Build das imagens definidas no docker-compose.yml
 
-build_backend:
+push_images:
   stage: build
   tags:
     - $PROJECT_TAG
   needs:
-    - build_frontend
+    - build_containers
   script:
-    - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
+    - docker-compose push  # Push das imagens, se necessário, definidas no docker-compose.yml
 
-build_nginx_ssl:
-  stage: build
-  tags:
-    - $PROJECT_TAG
-  needs:
-    - build_backend
-  script:
-    - docker build -t vsantosmt/portfolio-nginx:$VERSION ./nginx
-    # - docker build -t vsantosmt/portoflio-ssl:$VERSION ./certbot
-
-push_image:
-  stage: build
-  tags:
-    - $PROJECT_TAG
-  needs:
-    - build_frontend
-    - build_backend
-  script:
-    - docker push vsantosmt/portfolio-frontend:$VERSION
-    - docker push vsantosmt/portfolio-backend:$VERSION
-    - docker push vsantosmt/portfolio-nginx:$VERSION
-    # - docker push vsantosmt/portoflio-ssl:$VERSION
-      
+# Etapa de deploy, rodando os containers com Docker Compose
 execute_container:
-  image: docker:stable-dind  # Docker-in-Docker
-  services:
-    - docker:19.03.12  # Servico adicional com Docker
   stage: deploy
   tags:
     - $PROJECT_TAG
   needs:
-    - push_image
+    - push_images
   before_script:
     - |  # Remover containers antigos, se houver
          CONTAINERS_RUNNING=$(docker ps -aq)
@@ -70,11 +46,9 @@ execute_container:
            echo "Nenhum container em execução encontrado. Pulando remoção..."
          fi
   script:
-    - docker-compose -f docker-compose.yml up -d
-    # - docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
-    # - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
-    # - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION
+    - docker-compose -f docker-compose.yml up -d  # Levantar os containers com Docker Compose
 
+# Etapa para gerar o certificado SSL com Certbot
 ssl_generate:
   stage: deploy
   tags:
@@ -83,8 +57,81 @@ ssl_generate:
     - execute_container
   script:
     - docker-compose run --rm certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
-    - docker-compose exec nginx nginx -s reload
+    - docker-compose exec nginx nginx -s reload  # Recarregar o Nginx após gerar o certificado SSL
 
+# workflow:
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'  # Executa o pipeline apenas na branch main
+#     - if: '$CI_COMMIT_BRANCH == "qa"' # Executa o pipeline apenas na branch qa
+
+# variables:
+#   VERSION: "2.0"
+#   PROJECT_TAG: "port-oci"
+
+# stages:
+#   - build
+#   - deploy
+
+# build_frontend:
+#   stage: build
+#   tags:
+#     - $PROJECT_TAG
+#   script:
+#     - docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
+
+# build_backend:
+#   stage: build
+#   tags:
+#     - $PROJECT_TAG
+#   needs:
+#     - build_frontend
+#   script:
+#     - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
+
+# build_nginx_ssl:
+#   stage: build
+#   tags:
+#     - $PROJECT_TAG
+#   needs:
+#     - build_backend
+#   script:
+#     - docker build -t vsantosmt/portfolio-nginx:$VERSION ./nginx
+#     # - docker build -t vsantosmt/portoflio-ssl:$VERSION ./certbot
+
+# push_image:
+#   stage: build
+#   tags:
+#     - $PROJECT_TAG
+#   needs:
+#     - build_frontend
+#     - build_backend
+#   script:
+#     - docker push vsantosmt/portfolio-frontend:$VERSION
+#     - docker push vsantosmt/portfolio-backend:$VERSION
+#     - docker push vsantosmt/portfolio-nginx:$VERSION
+#     # - docker push vsantosmt/portoflio-ssl:$VERSION
+      
+# execute_container:
+#   stage: deploy
+#   tags:
+#     - $PROJECT_TAG
+#   needs:
+#     - push_image
+#   before_script:
+#     - |  # Remover containers antigos, se houver
+#          CONTAINERS_RUNNING=$(docker ps -aq)
+#          if [ -n "$CONTAINERS_RUNNING" ]; then
+#            echo "Containers em execução encontrados. Removendo containers..."
+#            docker stop $CONTAINERS_RUNNING
+#            docker rm -f $CONTAINERS_RUNNING
+#          else
+#            echo "Nenhum container em execução encontrado. Pulando remoção..."
+#          fi
+#   script:
+#     - docker-compose -f docker-compose.yml up -d
+#     # - docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
+#     # - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
+#     # - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION
 
 # ssl_generate:
 #   stage: deploy
@@ -93,7 +140,18 @@ ssl_generate:
 #   needs:
 #     - execute_container
 #   script:
-#     - docker run --rm --network proxy -v ./data/certbot/conf:/etc/letsencrypt -v ./data/certbot/www:/var/www/certbot certbot/certbot:v2.6.0 certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
-#     - docker exec webserver-nginx nginx -s reload
+#     - docker-compose run --rm certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
+#     - docker-compose exec nginx nginx -s reload
+
+
+# # ssl_generate:
+# #   stage: deploy
+# #   tags:
+# #     - $PROJECT_TAG
+# #   needs:
+# #     - execute_container
+# #   script:
+# #     - docker run --rm --network proxy -v ./data/certbot/conf:/etc/letsencrypt -v ./data/certbot/www:/var/www/certbot certbot/certbot:v2.6.0 certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
+# #     - docker exec webserver-nginx nginx -s reload
 
 
