@@ -57,18 +57,7 @@ execute_container:
   needs:
     - push_image
   before_script:
-    - |
-         # Instalar Docker Compose se não estiver presente
-         if ! command -v docker-compose &> /dev/null
-         then
-             echo "Docker Compose não encontrado. Instalando..."
-             curl -sL https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-             chmod +x /usr/local/bin/docker-compose
-         else
-             echo "Docker Compose já está instalado."
-         fi
-
-         # Remover containers antigos, se houver
+    - |  # Remover containers antigos, se houver
          CONTAINERS_RUNNING=$(docker ps -aq)
          if [ -n "$CONTAINERS_RUNNING" ]; then
            echo "Containers em execução encontrados. Removendo containers..."
