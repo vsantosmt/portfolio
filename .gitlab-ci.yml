@@ -80,6 +80,6 @@ execute_container:
 #     - execute_container
 #   script:
 #     - docker run --rm --network proxy -v ./data/certbot/conf:/etc/letsencrypt -v ./data/certbot/www:/var/www/certbot certbot/certbot:v2.6.0 certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
-#     - docker exec webserver-nginx nginx -s reload #
+#     - docker exec webserver-nginx nginx -s reload
 
 
