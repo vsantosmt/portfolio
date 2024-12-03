@@ -87,5 +87,6 @@ ssl_generate:
         -w /var/www/certbot \
         -d vgsenterprise.online -d www.vgsenterprise.online \
         --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
+    - docker exec webserver-nginx nginx -s reload
 
 
