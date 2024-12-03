@@ -79,7 +79,7 @@ ssl_generate:
   needs:
     - execute_container
   script:
-    - docker run --rm --network proxy -v /path/to/certbot/conf:/etc/letsencrypt -v /path/to/certbot/www:/var/www/certbot vsantosmt/portoflio-ssl:$VERSION certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
+    - docker run --rm --network proxy -v /path/to/certbot/conf:/etc/letsencrypt -v /path/to/certbot/www:/var/www/certbot certbot/certbot:v2.6.0 certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
     - docker exec webserver-nginx nginx -s reload
 
 
