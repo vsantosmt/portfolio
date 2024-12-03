@@ -51,7 +51,9 @@ push_image:
     # - docker push vsantosmt/portoflio-ssl:$VERSION
       
 execute_container:
-  image: docker:19.03.12
+  image: docker:stable-dind  # Docker-in-Docker
+  services:
+    - docker:19.03.12  # Servico adicional com Docker
   stage: deploy
   tags:
     - $PROJECT_TAG
