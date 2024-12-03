@@ -4,7 +4,7 @@ FROM certbot/certbot:v2.6.0
 # Instalar dependências adicionais no Alpine
 RUN apk add --no-cache \
     curl \
-    cron
+    dcron
 
 # Copiar um script para renovar os certificados
 COPY renew_certificates.sh /renew_certificates.sh
