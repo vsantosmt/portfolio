@@ -1,11 +1,10 @@
 # Use a imagem oficial do Certbot
 FROM certbot/certbot:v2.6.0
 
-# Instalar dependências adicionais, se necessário
-RUN apt-get update && apt-get install -y \
+# Instalar dependências adicionais no Alpine
+RUN apk add --no-cache \
     curl \
-    cron \
-    && rm -rf /var/lib/apt/lists/*
+    cron
 
 # Copiar um script para renovar os certificados
 COPY renew_certificates.sh /renew_certificates.sh
