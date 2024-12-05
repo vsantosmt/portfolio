@@ -71,25 +71,13 @@ execute_container:
     - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
     - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION
 
-# ssl_generate:
-#   stage: deploy
-#   tags:
-#     - $PROJECT_TAG
-#   needs:
-#     - execute_container
-#   script:
-#     - docker-compose run --rm certbot certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
-#     - docker-compose exec nginx nginx -s reload
-
-
-# ssl_generate:
-#   stage: deploy
-#   tags:
-#     - $PROJECT_TAG
-#   needs:
-#     - execute_container
-#   script:
-#     - docker run --rm --network proxy -v ./data/certbot/conf:/etc/letsencrypt -v ./data/certbot/www:/var/www/certbot certbot/certbot:v2.6.0 certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
-#     - docker exec webserver-nginx nginx -s reload
-
+ssl_generate:
+  stage: deploy
+  tags:
+    - $PROJECT_TAG
+  needs:
+    - execute_container
+  script:
+    - docker run --rm --network proxy -v ./data/certbot/conf:/etc/letsencrypt -v ./data/certbot/www:/var/www/certbot certbot/certbot:v2.6.0 certonly --webroot -w /var/www/certbot -d vgsenterprise.online -d www.vgsenterprise.online --non-interactive --agree-tos --email santos.viniciusmt@gmail.com
+    - docker exec webserver-nginx nginx -s reload
 
