@@ -35,7 +35,7 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt  # Volume para os certificados
       - ./data/certbot/www:/var/www/certbot  # Diretório para validação do Certbot
     ports: 
-      - "8080:8080"
+      - "80:80"
       - "443:443"
     networks:
       - proxy
