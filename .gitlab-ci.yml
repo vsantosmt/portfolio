@@ -35,7 +35,7 @@ build_nginx_ssl:
     - build_backend
   script:
     - docker build -t vsantosmt/portfolio-nginx:$VERSION ./nginx
-    # - docker build -t vsantosmt/portoflio-ssl:$VERSION ./certbot
+#     - docker build -t vsantosmt/portoflio-ssl:$VERSION ./certbot
 
 push_image:
   stage: build

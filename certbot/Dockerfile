@@ -11,7 +11,7 @@ COPY renew_certificates.sh /renew_certificates.sh
 RUN chmod +x /renew_certificates.sh
 
 # Criar volumes para persistência dos certificados
-VOLUME ["/etc/letsencrypt", "/var/lib/letsencrypt"]
+VOLUME ["/etc/letsencrypt", "/var/lib/letsencrypt", "/var/www/certbot"]
 
 # Configurar a renovação automática dos certificados
 CMD ["sh", "-c", "trap exit TERM; while :; do /renew_certificates.sh; sleep 12h & wait $${!}; done;"]
