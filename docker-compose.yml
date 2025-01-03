@@ -13,8 +13,11 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"  # Roteamento de tráfego para /api
-      - "traefik.http.services.backend.loadbalancer.server.port=5000"
+      - "traefik.http.routers.backend.rule=Host(`vgsenterprise.online`)"  # Substitua pelo seu subdomínio
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=ewacademy-cert"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"  # Porta do backend
 
   # Serviço do Frontend (Vite)
   frontend:
@@ -28,25 +31,32 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`vgsenterprise.online`) && PathPrefix(`/`)"  # Roteamento de tráfego para frontend
+      - "traefik.http.routers.frontend.rule=Host(`vgsenterprise.online`)"  # Substitua pelo seu domínio
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=ewacademy-cert"
+      - "traefik.http.services.frontend.loadbalancer.server.port=5173"  # Porta do frontend
 
   # Serviço do Traefik
   traefik:
-    image: traefik:v2.10
-    container_name: webserver-traefik
+    image: "traefik:v3.2"
+    container_name: "traefik"
     command:
-      - "--api.insecure=true"  # Habilita a UI do Traefik na porta 8080
-      - "--providers.docker=true"  # Habilita o provedor Docker
-      - "--entrypoints.web.address=:80"  # Entrypoint para tráfego HTTP
-      - "--entrypoints.websecure.address=:443"  # Entrypoint para tráfego HTTPS
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.ewacademy-cert.acme.tlschallenge=true"
+      - "--certificatesresolvers.ewacademy-cert.acme.email=santos.viniciusmt@gmail.com"
+      - "--certificatesresolvers.ewacademy-cert.acme.storage=/letsencrypt/acme.json"
     ports:
-      - "80:80"   # Porta HTTP
-      - "443:443" # Porta HTTPS
-      - "8080:8080" # Porta da UI do Traefik
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - proxy
-    labels:
-      - "traefik.enable=true"
 
 networks:
   proxy:
