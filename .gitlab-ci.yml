@@ -27,7 +27,7 @@ build_backend:
   script:
     - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
 
-build_nginx_ssl:
+build_nginx:
   stage: build
   tags:
     - $PROJECT_TAG
