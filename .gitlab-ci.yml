@@ -40,6 +40,7 @@ push_image:
     - docker push vsantosmt/portfolio-backend:$VERSION
 
 execute_container:
+  image: docker:compose
   stage: deploy
   tags:
     - $PROJECT_TAG
@@ -49,9 +50,10 @@ execute_container:
     - chmod +x script/remove_container.sh # Concede permissão de execução
     - ./script/remove_container.sh # Executa o script para remover containers antigos
   script:
-    - docker run -dti --name webserver-frontend --network proxy vsantosmt/portfolio-frontend:$VERSION
-    - docker run -dti --name webserver-backend --network proxy vsantosmt/portfolio-backend:$VERSION
-    - docker run -dti --name webserver-traefik --network proxy traefik:v3.2
+    - docker-compose up -d
+    # - docker run -dti --name webserver-frontend --network proxy vsantosmt/portfolio-frontend:$VERSION
+    # - docker run -dti --name webserver-backend --network proxy vsantosmt/portfolio-backend:$VERSION
+    # - docker run -dti --name webserver-traefik --network proxy traefik:v3.2
     # # Inicia o Traefik, que agora irá rotear o tráfego para o frontend e o backend.
 
 cleanup_images:
