@@ -13,11 +13,11 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`vgsenterprise.online`)"  # Substitua pelo seu subdomínio
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.routers.backend.tls=true"
-      - "traefik.http.routers.backend.tls.certresolver=ewacademy-cert"
-      - "traefik.http.services.backend.loadbalancer.server.port=5000"  # Porta do backend
+      - "traefik.http.routers.webserver-backend.rule=Host(`api.vgsenterprise.online`)"  # Substitua pelo seu subdomínio
+      - "traefik.http.routers.webserver-backend.entrypoints=websecure"
+      - "traefik.http.routers.webserver-backend.tls=true"
+      - "traefik.http.routers.webserver-backend.tls.certresolver=ewacademy-cert"
+      - "traefik.http.services.webserver-backend.loadbalancer.server.port=5000"  # Porta do backend
 
   # Serviço do Frontend (Vite)
   frontend:
@@ -31,11 +31,11 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`vgsenterprise.online`)"  # Substitua pelo seu domínio
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls=true"
-      - "traefik.http.routers.frontend.tls.certresolver=ewacademy-cert"
-      - "traefik.http.services.frontend.loadbalancer.server.port=5173"  # Porta do frontend
+      - "traefik.http.routers.webserver-frontend.rule=Host(`vgsenterprise.online`)"  # Substitua pelo seu domínio
+      - "traefik.http.routers.webserver-frontend.entrypoints=websecure"
+      - "traefik.http.routers.webserver-frontend.tls=true"
+      - "traefik.http.routers.webserver-frontend.tls.certresolver=ewacademy-cert"
+      - "traefik.http.services.webserver-frontend.loadbalancer.server.port=5173"  # Porta do frontend
 
   # Serviço do Traefik
   traefik:
