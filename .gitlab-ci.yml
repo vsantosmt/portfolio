@@ -10,6 +10,7 @@ variables:
 stages:
   - build
   - deploy
+  - cleanup
 
 build_frontend:
   stage: build
@@ -55,18 +56,19 @@ execute_container:
   needs:
     - push_image
   before_script:
-     - |
-          CONTAINERS_RUNNING=$(docker ps -aq)
-
-          if [ -n "$CONTAINERS_RUNNING" ]; then
-            echo "Containers em execução encontrados. Removendo containers..."
-            docker stop $CONTAINERS_RUNNING
-            docker rm -f $CONTAINERS_RUNNING
-          else
-            echo "Nenhum container em execução encontrado. Pulando remoção..."
-          fi
+    - chmod +x script/remove_container.sh # Concede permissao de execucao
+    - ./script/remove_container.sh # Executa o script
   script:
     - docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
     - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
     - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION #
 
+cleanup_images:
+  stage: cleanup
+  tags:
+    - $PROJECT_TAG
+  needs:
+    - execute_container
+  script:
+    - chmod +x script/cleanup_images.sh # Concede permissao de execucao
+    - ./script/cleanup_images.sh # Executa o script
