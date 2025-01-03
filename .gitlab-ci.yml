@@ -28,15 +28,6 @@ build_backend:
   script:
     - docker build -t vsantosmt/portfolio-backend:$VERSION ./backend
 
-build_nginx:
-  stage: build
-  tags:
-    - $PROJECT_TAG
-  needs:
-    - build_backend
-  script:
-    - docker build -t vsantosmt/portfolio-nginx:$VERSION ./nginx
-
 push_image:
   stage: build
   tags:
@@ -47,8 +38,7 @@ push_image:
   script:
     - docker push vsantosmt/portfolio-frontend:$VERSION
     - docker push vsantosmt/portfolio-backend:$VERSION
-    - docker push vsantosmt/portfolio-nginx:$VERSION
-      
+
 execute_container:
   stage: deploy
   tags:
@@ -56,12 +46,13 @@ execute_container:
   needs:
     - push_image
   before_script:
-    - chmod +x script/remove_container.sh # Concede permissao de execucao
-    - ./script/remove_container.sh # Executa o script
+    - chmod +x script/remove_container.sh # Concede permissão de execução
+    - ./script/remove_container.sh # Executa o script para remover containers antigos
   script:
-    - docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
-    - docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:$VERSION
-    - docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:$VERSION
+    - docker run -dti --name webserver-frontend --network proxy vsantosmt/portfolio-frontend:$VERSION
+    - docker run -dti --name webserver-backend --network proxy vsantosmt/portfolio-backend:$VERSION
+    - docker run -dti --name webserver-traefik --network proxy traefik:v2.10
+    # Inicia o Traefik, que agora irá rotear o tráfego para o frontend e o backend.
 
 cleanup_images:
   stage: cleanup
@@ -70,5 +61,5 @@ cleanup_images:
   needs:
     - execute_container
   script:
-    - chmod +x script/cleanup_images.sh # Concede permissao de execucao
-    - ./script/cleanup_images.sh # Executa o script
+    - chmod +x script/cleanup_images.sh # Concede permissão de execução
+    - ./script/cleanup_images.sh # Executa o script de limpeza de imagens
