@@ -14,10 +14,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.webserver-backend.rule=Host(`api.vgsenterprise.online`)"  # Substitua pelo seu subdomínio
-      - "traefik.http.routers.webserver-backend.entrypoints=websecure"
+      - "traefik.http.routers.webserver-backend.entrypoints=https"
       - "traefik.http.routers.webserver-backend.tls=true"
-      - "traefik.http.routers.webserver-backend.tls.certresolver=ewacademy-cert"
-      - "traefik.http.services.webserver-backend.loadbalancer.server.port=5000"  # Porta do backend
+      - "traefik.http.routers.webserver-backend.tls.certresolver=myresolver"
 
   # Serviço do Frontend (Vite)
   frontend:
@@ -32,29 +31,31 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.webserver-frontend.rule=Host(`vgsenterprise.online`)"  # Substitua pelo seu domínio
-      - "traefik.http.routers.webserver-frontend.entrypoints=websecure"
+      - "traefik.http.routers.webserver-frontend.entrypoints=https"
       - "traefik.http.routers.webserver-frontend.tls=true"
-      - "traefik.http.routers.webserver-frontend.tls.certresolver=ewacademy-cert"
-      - "traefik.http.services.webserver-frontend.loadbalancer.server.port=5173"  # Porta do frontend
+      - "traefik.http.routers.webserver-frontend.tls.certresolver=myresolver"
 
   # Serviço do Traefik
   traefik:
     image: "traefik:v3.2"
     container_name: "traefik"
     command:
+      #- "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entryPoints.websecure.address=:443"
-      - "--certificatesresolvers.ewacademy-cert.acme.tlschallenge=true"
-      - "--certificatesresolvers.ewacademy-cert.acme.email=santos.viniciusmt@gmail.com"
-      - "--certificatesresolvers.ewacademy-cert.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.https.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=http"
+      - "--certificatesresolvers.myresolver.acme.email=santos.viniciusmt@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
+      - "80:80"
       - "443:443"
-      - "8080:8080"
     volumes:
-      - "./letsencrypt:/letsencrypt"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "traefik-cert-storage:/letsencrypt"
+    
     networks:
       - proxy
 
