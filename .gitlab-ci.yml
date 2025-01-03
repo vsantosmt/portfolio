@@ -40,7 +40,7 @@ push_image:
     - docker push vsantosmt/portfolio-backend:$VERSION
 
 execute_container:
-  image: docker:compose
+  image: docker/compose:1.29.2
   stage: deploy
   tags:
     - $PROJECT_TAG

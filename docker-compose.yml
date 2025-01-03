@@ -38,7 +38,7 @@ services:
   # Serviço do Traefik
   traefik:
     image: traefik:v3.2
-    container_name: traefik
+    container_name: webserver-traefik
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
