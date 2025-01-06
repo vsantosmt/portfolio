@@ -4,6 +4,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import StyledButton from "../../../../components/StyledButton/StyledButton";
 import { AnimatedBackground } from "../../../../components/AnimatedBackground/AnimatedBackground";
+import NavBar from "../../../../components/Navbar/Navbar";
 
 const Hero = () => {
     const StyledHero = styled("div")(({ theme }) => ({
@@ -72,6 +73,27 @@ const Hero = () => {
                     </Grid>
                 </Container>
             </StyledHero>
+
+            <div>
+                {/* Navbar */}
+                <NavBar />
+
+                {/* Seções */}
+                <section id="sobre" style={{ padding: '100px 0', backgroundColor: '#f0f0f0' }}>
+                    <h2>Sobre</h2>
+                    <p>Esta é a seção de Sobre. Aqui você pode escrever informações sobre você ou seu projeto.</p>
+                </section>
+
+                <section id="skills" style={{ padding: '100px 0', backgroundColor: '#e0e0e0' }}>
+                    <h2>Skills</h2>
+                    <p>Esta seção descreve suas habilidades. Liste suas competências aqui.</p>
+                </section>
+
+                <section id="projetos" style={{ padding: '100px 0', backgroundColor: '#d0d0d0' }}>
+                    <h2>Projetos</h2>
+                    <p>Aqui você pode falar sobre os projetos que você desenvolveu ou está desenvolvendo.</p>
+                </section>
+            </div>
         </>
     );
 };
