@@ -40,7 +40,9 @@ push_image:
     - docker push vsantosmt/portfolio-backend:$VERSION
 
 execute_container:
-  image: docker/compose:1.29.2
+  image: docker:24.0.5
+  services:
+  - docker:dind
   stage: deploy
   tags:
     - $PROJECT_TAG
@@ -49,6 +51,12 @@ execute_container:
   before_script:
     - chmod +x script/remove_container.sh # Concede permissão de execução
     - ./script/remove_container.sh # Executa o script para remover containers antigos
+    # Atualizar e instalar dependências necessárias
+    - apk add --no-cache py3-pip
+    # Instalar o Docker Compose
+    - pip install docker-compose
+    # Verificar a instalação
+    - docker-compose --version
   script:
     - docker-compose up -d
     # - docker run -dti --name webserver-frontend --network proxy vsantosmt/portfolio-frontend:$VERSION
