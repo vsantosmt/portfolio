@@ -74,12 +74,12 @@ const Hero = () => {
                 </Container>
             </StyledHero>
 
-            <div>
+            {/* <div> */}
                 {/* Navbar */}
                 <NavBar />
 
                 {/* Seções */}
-                <section id="sobre" style={{ padding: '100px 0', backgroundColor: '#f0f0f0' }}>
+                {/* <section id="sobre" style={{ padding: '100px 0', backgroundColor: '#f0f0f0' }}>
                     <h2>Sobre</h2>
                     <p>Esta é a seção de Sobre. Aqui você pode escrever informações sobre você ou seu projeto.</p>
                 </section>
@@ -92,8 +92,8 @@ const Hero = () => {
                 <section id="projetos" style={{ padding: '100px 0', backgroundColor: '#d0d0d0' }}>
                     <h2>Projetos</h2>
                     <p>Aqui você pode falar sobre os projetos que você desenvolveu ou está desenvolvendo.</p>
-                </section>
-            </div>
+                </section> */}
+            {/* </div> */}
         </>
     );
 };
