@@ -51,9 +51,9 @@ execute_container:
   before_script:
     - chmod +x script/remove_container.sh # Concede permissão de execução
     - ./script/remove_container.sh # Executa o script para remover containers antigos
-    - sudo apt update
+    - apt update
     # Instalar o Docker Compose
-    - sudo apt install docker-compose-plugin
+    - apt install -y docker-compose-plugin
     # Verificar a instalação
     - docker-compose --version
   script:
