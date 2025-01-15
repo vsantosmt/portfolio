@@ -37,7 +37,7 @@ const Hero = () => {
     };
 
     // paleta dos sections
-    const Section = styled("section")(({ theme }) => ({
+    const Section = styled("section")(({ }) => ({
         padding: '50px 0',
         flexDirection: "column",
         alignItems: "center",
@@ -45,6 +45,27 @@ const Hero = () => {
         marginRight: 100,
         marginLeft: 100,
         textAlign: "justify",
+    }));
+
+    // paleta da section projetos
+    const SectionProject = styled("section")(({ }) => ({
+        backgroundColor: "#232323",
+        // padding: '50px 0',
+        flexDirection: "column",
+        alignItems: "center",
+        display: "flex",
+        textAlign: "justify"
+    }));
+
+    const SectionProjectInside = styled("section")(({ }) => ({
+        backgroundColor: "#232323",
+        padding: '50px 0',
+        flexDirection: "column",
+        alignItems: "center",
+        display: "flex",
+        textAlign: "justify",
+        marginRight: 100,
+        marginLeft: 100
     }));
 
     return (
@@ -84,23 +105,25 @@ const Hero = () => {
                 </Container>
             </StyledHero>
 
-            <div className="container">
-                <div className="card">
-                    <div className="icon">🏅</div>
-                    <h3>Experiência</h3>
-                    <p>2+ anos</p>
-                    <p>Infraestrutura</p>
-                </div>
-                <div className="card">
-                    <div className="icon">🎓</div>
-                    <h3>Educação</h3>
-                    <p>Tecnólogo</p>
-                    <p>Análise e Desenvolvimento de Sistemas</p>
-                </div>
-            </div>
 
             <Section id="sobre">
                 <Typography variant="h2">Sobre</Typography>
+
+                <div className="container">
+                    <div className="card">
+                        <div className="icon">🏅</div>
+                        <h3>Experiência</h3>
+                        <p>2+ anos</p>
+                        <p>Infraestrutura</p>
+                    </div>
+                    <div className="card">
+                        <div className="icon">🎓</div>
+                        <h3>Educação</h3>
+                        <p>Tecnólogo</p>
+                        <p>Análise e Desenvolvimento de Sistemas</p>
+                    </div>
+                </div>
+
                 <Typography variant="h6">Sou Vinícius Santos, um analista de infraestrutura com experiência em Azure Virtual Desktop e Citrix, focado na implementação e gerenciamento de soluções de virtualização de desktops e aplicações corporativas. Possuo sólido conhecimento em administração de sistemas operacionais Windows, gerenciamento de infraestrutura na nuvem e técnicas de IaC (Infrastructure as Code) utilizando Terraform.
 
                     Além disso, destaco minhas habilidades em automação de tarefas com PowerShell, provisionamento de infraestrutura eficiente e otimização de custos para clientes em ambientes de nuvem. Minha formação inclui cursos técnicos e superiores na área de desenvolvimento de sistemas, além de certificações como Azure Fundamentals e Oracle Cloud Infrastructure Foundations Associate.
@@ -108,7 +131,9 @@ const Hero = () => {
                     Atualmente, estou aprofundando meus conhecimentos em DevOps, buscando integrar práticas de desenvolvimento e operações para entregar soluções ágeis e escaláveis.</Typography>
             </Section>
 
-            <Section id="skills">
+            <div className="divider"></div>
+
+            <div id="skills">
                 <Typography variant="h2">Skills</Typography>
                 <div className="skills-container">
                     <div className="skill-card">
@@ -138,18 +163,19 @@ const Hero = () => {
                         <p>Comunicação Clara</p>
                     </div>
                 </div>
-            </Section>
-
+            </div>
 
             {/* <Section id="skills">
                 <Typography variant="h2">Skills</Typography>
                 <Typography variant="h6">Sou um profissional com sólida experiência em infraestrutura e virtualização, especializado em Azure Virtual Desktop e Citrix Virtual Apps and Desktops. Domino ferramentas de automação como PowerShell e Terraform, além de containerização com Docker e Docker Compose. Tenho conhecimento em pipelines CI/CD no GitLab, monitoramento com Grafana e Prometheus e gerenciamento de ambientes na nuvem, como Azure e OCI. Atualmente, estou expandindo minhas habilidades na área de DevOps, unindo desenvolvimento e operações para criar soluções mais eficientes e ágeis.</Typography>
             </Section> */}
 
-            <Section id="projetos">
-                <Typography variant="h2">Projetos</Typography>
-                <Typography variant="h6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id ornare neque. Aliquam tristique urna sit amet aliquet condimentum. Curabitur ultricies turpis nec sem posuere tincidunt. Aenean non arcu ut nisl vulputate imperdiet. Nulla tellus arcu, dignissim ut elementum vel, scelerisque a dui. In vel convallis ex, vel suscipit enim. Curabitur vestibulum sem faucibus ligula vulputate, ac tempus libero condimentum. Sed at turpis hendrerit, hendrerit lorem eu, tempor augue. Phasellus pharetra nisi a sem volutpat, et pulvinar nisi interdum. Cras fermentum dui tellus, quis mattis augue fringilla sit amet. Donec vitae elit mauris. Nam efficitur nisl leo, tempus luctus augue lacinia nec. Etiam efficitur convallis pretium. Nam aliquam tellus ornare nulla accumsan, a ultricies mi consequat. Vestibulum eget nisl nec sapien eleifend lacinia et quis tortor..</Typography>
-            </Section>
+            <SectionProject id="projetos">
+                <SectionProjectInside>
+                    <Typography color="primary.contrastText" variant="h2">Projetos</Typography>
+                    <Typography color="primary.contrastText" variant="h6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id ornare neque. Aliquam tristique urna sit amet aliquet condimentum. Curabitur ultricies turpis nec sem posuere tincidunt. Aenean non arcu ut nisl vulputate imperdiet. Nulla tellus arcu, dignissim ut elementum vel, scelerisque a dui. In vel convallis ex, vel suscipit enim. Curabitur vestibulum sem faucibus ligula vulputate, ac tempus libero condimentum. Sed at turpis hendrerit, hendrerit lorem eu, tempor augue. Phasellus pharetra nisi a sem volutpat, et pulvinar nisi interdum. Cras fermentum dui tellus, quis mattis augue fringilla sit amet. Donec vitae elit mauris. Nam efficitur nisl leo, tempus luctus augue lacinia nec. Etiam efficitur convallis pretium. Nam aliquam tellus ornare nulla accumsan, a ultricies mi consequat. Vestibulum eget nisl nec sapien eleifend lacinia et quis tortor..</Typography>
+                </SectionProjectInside>
+            </SectionProject>
         </>
     );
 };
