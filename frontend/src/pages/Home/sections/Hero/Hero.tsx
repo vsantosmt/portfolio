@@ -54,7 +54,7 @@ const Hero = () => {
         flexDirection: "column",
         alignItems: "center",
         display: "flex",
-        textAlign: "justify"
+        textAlign: "justify",
     }));
 
     const SectionProjectInside = styled("section")(({ }) => ({
@@ -65,7 +65,7 @@ const Hero = () => {
         display: "flex",
         textAlign: "justify",
         marginRight: 100,
-        marginLeft: 100
+        marginLeft: 100,
     }));
 
     return (
@@ -135,47 +135,95 @@ const Hero = () => {
 
             <div id="skills">
                 <Typography variant="h2">Skills</Typography>
-                <div className="skills-container">
-                    <div className="skill-card">
+                <section className="skills">
+                    <div className="skill-box">
                         <h3>Infraestrutura</h3>
-                        <p>Azure Virtual Desktop</p>
-                        <p>Citrix Virtual Apps</p>
-                        <p>Servidores Windows</p>
-                        <p>Gerenciamento em Nuvem</p>
+                        <ul>
+                            <li>Azure Virtual Desktop</li>
+                            <li>Citrix Virtual Apps</li>
+                            <li>Windows Server e Workstation</li>
+                            <li>Linux</li>
+                            <li>Azure</li>
+                            <li>OCI</li>
+                        </ul>
                     </div>
-                    <div className="skill-card">
+                    <div className="skill-box">
                         <h3>DevOps</h3>
-                        <p>Terraform</p>
-                        <p>Docker e Docker Compose</p>
-                        <p>CI/CD com GitLab</p>
-                        <p>Monitoramento com Grafana</p>
+                        <ul>
+                            <li>Docker e K8s</li>
+                            <li>Pipeline CI/CD</li>
+                            <li>Grafana e Prometheus</li>
+                            <li>Nginx</li>
+                            <li>Git</li>
+                        </ul>
                     </div>
-                    <div className="skill-card">
+                    <div className="skill-box">
                         <h3>Automação</h3>
-                        <p>PowerShell</p>
-                        <p>Infraestrutura como Código</p>
-                        <p>Otimização de Processos</p>
+                        <ul>
+                            <li>Terraform</li>
+                            <li>PowerShell</li>
+                            <li>Bash</li>
+                        </ul>
                     </div>
-                    <div className="skill-card">
+                    <div className="skill-box">
                         <h3>Outras Competências</h3>
-                        <p>Resolução de Problemas</p>
-                        <p>Trabalho em Equipe</p>
-                        <p>Comunicação Clara</p>
+                        <ul>
+                            <li>Resolução de Problemas</li>
+                            <li>Trabalho em Equipe</li>
+                            <li>Comunicação Clara</li>
+                            <li>Inglês Técnico</li>
+                        </ul>
                     </div>
-                </div>
+                    <div className="skill-box">
+                        <h3>Certificações</h3>
+                        <ul>
+                            <li>Microsoft Certified: Fundamentals</li>
+                            <li>Microsoft Certified: Security and Compliance</li>
+                            <li>Azure Virtual Desktop Specialty</li>
+                            <li>Oracle Cloud Infrastructure</li>
+                        </ul>
+                    </div>
+                </section>
             </div>
 
-            {/* <Section id="skills">
-                <Typography variant="h2">Skills</Typography>
-                <Typography variant="h6">Sou um profissional com sólida experiência em infraestrutura e virtualização, especializado em Azure Virtual Desktop e Citrix Virtual Apps and Desktops. Domino ferramentas de automação como PowerShell e Terraform, além de containerização com Docker e Docker Compose. Tenho conhecimento em pipelines CI/CD no GitLab, monitoramento com Grafana e Prometheus e gerenciamento de ambientes na nuvem, como Azure e OCI. Atualmente, estou expandindo minhas habilidades na área de DevOps, unindo desenvolvimento e operações para criar soluções mais eficientes e ágeis.</Typography>
-            </Section> */}
+            <div className="spacer"></div>
 
             <SectionProject id="projetos">
+
                 <SectionProjectInside>
                     <Typography color="primary.contrastText" variant="h2">Projetos</Typography>
-                    <Typography color="primary.contrastText" variant="h6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id ornare neque. Aliquam tristique urna sit amet aliquet condimentum. Curabitur ultricies turpis nec sem posuere tincidunt. Aenean non arcu ut nisl vulputate imperdiet. Nulla tellus arcu, dignissim ut elementum vel, scelerisque a dui. In vel convallis ex, vel suscipit enim. Curabitur vestibulum sem faucibus ligula vulputate, ac tempus libero condimentum. Sed at turpis hendrerit, hendrerit lorem eu, tempor augue. Phasellus pharetra nisi a sem volutpat, et pulvinar nisi interdum. Cras fermentum dui tellus, quis mattis augue fringilla sit amet. Donec vitae elit mauris. Nam efficitur nisl leo, tempus luctus augue lacinia nec. Etiam efficitur convallis pretium. Nam aliquam tellus ornare nulla accumsan, a ultricies mi consequat. Vestibulum eget nisl nec sapien eleifend lacinia et quis tortor..</Typography>
+                    <div className="internal-div-projects">
+
+                        <Typography color="primary.contrastText" variant="h4">Portfólio</Typography>
+                        <Typography color="primary.contrastText" variant="h6">Meu primeiro projeto foi este portfólio, no qual utilizei uma infraestrutura do Oracle Cloud Infrastructure (OCI) com Linux Ubuntu. Usei também Docker para containerização e Kubernetes para orquestração. O Git foi utilizado para controle de versão, enquanto o GitLab gerenciou o pipeline CI/CD. Nesse projeto, aprendi a automatizar completamente o processo de deploy, configurando pipelines que, ao realizar um commit em uma branch especificada, atualizam diretamente a infraestrutura no OCI, refletindo as mudanças em segundos.
+                            Embora meu foco principal seja a área de infraestrutura, também desenvolvi o backend em Python e o frontend em Vite. Acesse <a href="https://vgsenterprise.online/">AQUI</a></Typography>
+                        <div className="technologies">
+                            <img src="https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png" alt="Docker" title="Docker" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg" alt="Kubernetes" title="Kubernetes" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/GitLab_logo.svg" alt="GitLab" title="GitLab" />
+                            <img src="https://vitejs.dev/logo.svg" alt="Vite" title="Vite" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python" title="Python" />
+                        </div>
+
+                        <div className="internal-div-escala">
+                            <Typography color="primary.contrastText" variant="h4">Escala Online</Typography>
+                            <Typography color="primary.contrastText" variant="h6">Projeto desenvolvido com o objetivo de melhorar a visibilidade e registrar o histórico de escalas e músicas de uma das igrejas da minha cidade. Para sua execução, utilizei a infraestrutura do OCI com Linux Ubuntu, Docker para containerização, e Kubernetes para orquestração. O controle de versão foi realizado com Git, enquanto o pipeline CI/CD foi implementado com GitHub Actions.
+
+                                Nesse projeto, adquiri experiência na automação de processos de deploy, utilizando pipelines CI/CD no GitHub</Typography>
+                            <Typography color="primary.contrastText" variant="h6">Para o desenvolvimento utilizei HTML, CSS e JS como tecnologias. Embora o frontend ainda não esteja finalizado e o banco de dados esteja em fase de implementação, toda a infraestrutura já está 100% automatizada por meio de pipelines CI/CD, permitindo a implantação completa com apenas um commit. Acesse <a href="https://admataoescala.vgsenterprise.online/">AQUI</a></Typography>
+
+                            <div className="technologies">
+                                <img src="https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png" alt="Docker" title="Docker" />
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg" alt="Kubernetes" title="Kubernetes" />
+                                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" />
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" />
+                            </div>
+                        </div>
+                    </div>
                 </SectionProjectInside>
-            </SectionProject>
+            </SectionProject >
         </>
     );
 };
