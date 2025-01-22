@@ -207,9 +207,7 @@ const Hero = () => {
 
                         <div className="internal-div-escala">
                             <Typography color="primary.contrastText" variant="h4">Escala Online</Typography>
-                            <Typography color="primary.contrastText" variant="h6">Projeto desenvolvido com o objetivo de melhorar a visibilidade e registrar o histórico de escalas e músicas de uma das igrejas da minha cidade. Para sua execução, utilizei a infraestrutura do OCI com Linux Ubuntu, Docker para containerização, e Kubernetes para orquestração. O controle de versão foi realizado com Git, enquanto o pipeline CI/CD foi implementado com GitHub Actions.
-
-                                Nesse projeto, adquiri experiência na automação de processos de deploy, utilizando pipelines CI/CD no GitHub</Typography>
+                            <Typography color="primary.contrastText" variant="h6">Projeto desenvolvido com o objetivo de melhorar a visibilidade e registrar o histórico de escalas e músicas de uma das igrejas da minha cidade. Para sua execução, utilizei a infraestrutura do OCI com Linux Ubuntu, Docker para containerização, e Kubernetes para orquestração. O controle de versão foi realizado com Git, enquanto o pipeline CI/CD foi implementado com GitHub Actions. Nesse projeto, adquiri experiência na automação de processos de deploy, utilizando pipelines CI/CD no GitHub</Typography>
                             <Typography color="primary.contrastText" variant="h6">Para o desenvolvimento utilizei HTML, CSS e JS como tecnologias. Embora o frontend ainda não esteja finalizado e o banco de dados esteja em fase de implementação, toda a infraestrutura já está 100% automatizada por meio de pipelines CI/CD, permitindo a implantação completa com apenas um commit. Acesse <a href="https://admataoescala.vgsenterprise.online/">AQUI</a></Typography>
 
                             <div className="technologies">
