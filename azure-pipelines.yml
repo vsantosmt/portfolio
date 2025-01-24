@@ -12,5 +12,3 @@ steps:
   displayName: 'Cloning GitLab repository'
   env:
     GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
-
-
