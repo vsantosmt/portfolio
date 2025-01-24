@@ -27,7 +27,7 @@ resource "google_compute_firewall" "allow_http_https" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443", "5000", "5173"]
+    ports    = ["22", "80", "443", "3000", "5000", "5173"]
   }
 
   # Definindo os IPs que podem acessar (por exemplo, 0.0.0.0/0 para permitir qualquer IP)

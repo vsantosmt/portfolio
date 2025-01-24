@@ -1,6 +1,6 @@
 #project
 variable "project_id" {
-  default = "portfolio-440103" #alterar conforme mudar de projeto
+  default = "digital-display-448717-u6" #alterar conforme mudar de projeto
 }
 variable "region" {
   default = "us-west1"
@@ -8,7 +8,7 @@ variable "region" {
 
 #compute_instace
 variable "account_id" {
-  default = "portfolio-440103"
+  default = "digital-display-448717-u6"
 }
 variable "compute_instace_name" {
   default = "port-prd"

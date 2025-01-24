@@ -1,0 +1,16 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  GITLAB_REPO_URL: "https://santos.viniciusmt@gitlab.com/santos.viniciusmt/portfolio.git"
+
+steps:
+- script: |
+    git clone https://$(GITLAB_USERNAME):$(GITLAB_ACCESS_TOKEN)@gitlab.com/santos.viniciusmt/portfolio.git
+  displayName: 'Cloning GitLab repository'
+  env:
+    GITLAB_USERNAME: "santos.viniciusmt"
+    GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
