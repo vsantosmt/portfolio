@@ -4,7 +4,7 @@ trigger:
       - main
 
 pool:
-  vmImage: Linux-GCP
+  vmImage: "Linux-GCP"
 
 steps:
 - script: |
