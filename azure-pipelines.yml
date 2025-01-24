@@ -8,9 +8,6 @@ pool:
 
 steps:
 - script: |
-    git clone https://santos.viniciusmt:$(GITLAB_ACCESS_TOKEN)@gitlab.com/santos.viniciusmt/portfolio.git
+    git clone https://gitlab.com/santos.viniciusmt/portfolio.git
     echo 'Cloned'
   displayName: 'Cloning GitLab repository'
-  env:
-    GITLAB_USERNAME: "santos.viniciusmt"
-    GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
