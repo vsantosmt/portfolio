@@ -5,6 +5,8 @@ trigger:
 
 variables: 
   VERSION: "2.0"
+  DOCKER_USERNAME: $(DOCKER_USERNAME)
+  DOCKER_PASSWORD: $(DOCKER_PASSWORD)
 
 pool:
   name: "Linux-GCP"
@@ -21,5 +23,19 @@ stages:
           env:
             GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
 
-        - script: docker-compose up -d
-          displayName: start docker compose
+        - script: docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
+          displayName: build frontend
+
+        - script:
+            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+          displayName: 'login to docker'
+
+        - script: docker push vsantosmt/portfolio-frontend:$VERSION
+          displayName: push frontend
+      
+  - stage: deploy
+    jobs:
+      - job: deploy_frontend
+        displayName: deploy_frontend
+        steps:
+          - script: docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:$VERSION
