@@ -35,6 +35,6 @@ stages:
       - job: execute_frontend
         displayName: execute_frontend
         steps:
-          - script: docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:2.0
+          - script: docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:2.0
 
     
