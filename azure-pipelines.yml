@@ -12,8 +12,8 @@ pool:
 stages:
   - stage: build
     jobs:
-      - job: clone_repo
-        displayName: clone_repo
+      - job: clone_build_push_frontend
+        displayName: clone_build_push_frontend
         steps:
         - script:
             git clone https://santos.viniciusmt:$(GITLAB_ACCESS_TOKEN)@gitlab.com/santos.viniciusmt/portfolio.git
@@ -21,20 +21,26 @@ stages:
           env:
             GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
 
-  - stage: build
-    jobs:
-      - job: build_frontend
-        displayName: build_frontend
-        steps:
         - script: docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
           displayName: builded frontend
-  - stage: build
-    jobs:
-      - job: push_frontend
-        displayName: push_frontend
-        steps:
-          - script: docker push vsantosmt/portfolio-frontend:$VERSION
-            displayName: pushed frontend
+
+        - script: docker push vsantosmt/portfolio-frontend:$VERSION
+          displayName: pushed frontend
+
+  # - stage: build
+  #   jobs:
+  #     - job: build_frontend
+  #       displayName: build_frontend
+  #       steps:
+  #       - script: docker build -t vsantosmt/portfolio-frontend:$VERSION ./frontend
+  #         displayName: builded frontend
+  # - stage: build
+  #   jobs:
+  #     - job: push_frontend
+  #       displayName: push_frontend
+  #       steps:
+  #         - script: docker push vsantosmt/portfolio-frontend:$VERSION
+  #           displayName: pushed frontend
 
 # steps:
 # - script:
