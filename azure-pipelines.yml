@@ -3,8 +3,8 @@ trigger:
     include:
       - main
 
-variables: 
-  VERSION: "2.0"
+variables:
+- group: TOKENS
 
 pool:
   name: "Linux-GCP"
@@ -21,30 +21,36 @@ stages:
           env:
             GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
 
-      - job: logindocker_pushdockerhub
-        displayName: login_docker
-        steps:
-          #login docker hub
-          - task: Docker@2
-            displayName: 'Login to Docker Hub'
-            inputs:
-              command: 'login'
-              containerRegistry: 'DockerHubConnection'
-          
-          #build do frontend
-          - task: Docker@2
-            displayName: build_frontend
-            inputs:
-              command: build
-              Dockerfile: frontend/Dockerfile
-              tags: $(DOCKER_USERNAME)/portfolio-frontend:2.0
+        - script: |
+            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+            docker build -t $(DOCKER_USERNAME)/portfolio-frontend:2.0 frontend/
+            docker push $(DOCKER_USERNAME)/portfolio-frontend:2.0
+          displayName: 'Build and Push Docker Image'
 
-          #push do frontend
-          - task: Docker@2
-            displayName: push_frontend
-            inputs:
-              command: push
-              repository: $(DOCKER_USERNAME)/portofio-frontend
-              tags: "2.0"
+      # - job: logindocker_pushdockerhub
+      #   displayName: login_docker
+      #   steps:
+      #     #login docker hub
+      #     - task: Docker@2
+      #       displayName: 'Login to Docker Hub'
+      #       inputs:
+      #         command: 'login'
+      #         containerRegistry: 'DockerHubConnection'
+          
+      #     #build do frontend
+      #     - task: Docker@2
+      #       displayName: build_frontend
+      #       inputs:
+      #         command: build
+      #         Dockerfile: frontend/Dockerfile
+      #         tags: $(DOCKER_USERNAME)/portfolio-frontend:2.0
+
+      #     #push do frontend
+      #     - task: Docker@2
+      #       displayName: push_frontend
+      #       inputs:
+      #         command: push
+      #         repository: $(DOCKER_USERNAME)/portofio-frontend
+      #         tags: "2.0"
 
 
