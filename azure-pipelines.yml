@@ -21,7 +21,7 @@ stages:
           env:
             GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
 
-      - job: login_docker
+      - job: logindocker_pushdockerhub
         displayName: login_docker
         steps:
           #login docker hub
@@ -36,7 +36,7 @@ stages:
             displayName: build_frontend
             inputs:
               command: build
-              Dockerfile: ./frontend
+              Dockerfile: frontend/Dockerfile
               tags: $(DOCKER_USERNAME)/portfolio-frontend:$(VERSION)
 
           #push do frontend
