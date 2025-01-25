@@ -37,7 +37,7 @@ stages:
             inputs:
               command: build
               Dockerfile: frontend/Dockerfile
-              tags: $(DOCKER_USERNAME)/portfolio-frontend:$(VERSION)
+              tags: $(DOCKER_USERNAME)/portfolio-frontend:2.0
 
           #push do frontend
           - task: Docker@2
@@ -45,6 +45,6 @@ stages:
             inputs:
               command: push
               repository: $(DOCKER_USERNAME)/portofio-frontend
-              tags: $(VERSION)
+              tags: "2.0"
 
 
