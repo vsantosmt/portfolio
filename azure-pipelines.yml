@@ -45,7 +45,6 @@ stages:
             inputs:
               command: push
               repository: $(DOCKER_USERNAME)/portofio-frontend
-              tags: $(DOCKER_USERNAME)/portfolio-frontend:$(VERSION)
+              tags: $(VERSION)
 
 
-              
