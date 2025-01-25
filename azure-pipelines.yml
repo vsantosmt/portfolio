@@ -26,3 +26,8 @@ stages:
 
         - script: docker push vsantosmt/portfolio-frontend:$VERSION
           displayName: pushed frontend
+
+
+
+
+          
