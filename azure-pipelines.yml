@@ -12,5 +12,7 @@ steps:
   displayName: 'Cloning GitLab repository'
   env:
     GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
-
-    
+- script: |
+    mkdir -p /home/gcp/
+    cp -r . /home/gcp/
+  displayName: 'Move cloned repository to target home'
