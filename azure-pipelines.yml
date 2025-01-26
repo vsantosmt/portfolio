@@ -7,7 +7,7 @@ variables:
 - group: TOKENS
 
 pool:
-  name: "Linux-GCP"
+  name: "Default" #Agent pool name
 
 stages:
   - stage: build
