@@ -7,7 +7,7 @@ variables:
 - group: TOKENS
 
 pool:
-  name: "Default" #Agent pool name
+  name: "Linux-GCP" #Agent pool name
 
 stages:
   - stage: build
@@ -21,18 +21,58 @@ stages:
           env:
             GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
 
-      - job: build_push_frontend
-        displayName: build_push_frontend
+      - job: build_front_back
+        displayName: build_front_back
+        dependsOn: clone_repo
         steps: 
         - script: |
             echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
             docker build -t $(DOCKER_USERNAME)/portfolio-frontend:2.0 frontend/
+            docker build -t $(DOCKER_USERNAME)/portfolio-backend:2.0 backend/
+          displayName: 'Build frontend and backend'
+
+      - job: build_nginx
+        displayName: build_nginx
+        dependsOn: build_front_back
+        steps: 
+        - script: |
+            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+            docker build -t $(DOCKER_USERNAME)/portfolio-nginx:2.0 nginx/
+          displayName: 'Build nginx'
+
+      - job: push_images
+        displayName: push_images
+        steps: 
+        - script: |
+            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
             docker push $(DOCKER_USERNAME)/portfolio-frontend:2.0
-          displayName: 'Build and Push Docker Image'
+            docker push $(DOCKER_USERNAME)/portfolio-backend:2.0
+            docker push $(DOCKER_USERNAME)/portfolio-nginx:2.0
+          displayName: 'Push images'
 
   - stage: deploy
     jobs:
-      - job: execute_frontend
-        displayName: execute_frontend
+      - job: deploy_front_back
+        displayName: deploy_front_back
         steps:
-          - script: docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:2.0
+          - script: | #clean up containers
+              chmod +x script/remove_container.sh
+              ./script/remove_container.sh 
+          - script: 
+              docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:2.0
+              docker run -dti --name webserver-backend -p 5173:80 vsantosmt/portfolio-backend:2.0
+
+      - job: deploy_nginx
+        displayName: deploy_nginx
+        dependsOn: deploy_front_back
+        steps:
+          - script:
+              docker run -dti --name webserver-nginx -p 5173:80 vsantosmt/portfolio-nginx:2.0
+
+      - job: clean_up_images
+        displayName: clean_up_images
+        dependsOn: deploy_nginx
+        steps:
+          - script: | #clean up images
+              chmod +x script/cleanup_images.sh
+              ./script/cleanup_images.sh
