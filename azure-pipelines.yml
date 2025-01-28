@@ -70,12 +70,11 @@ stages:
           - script:
               docker run -dti --name webserver-nginx -p 5173:80 vsantosmt/portfolio-nginx:2.0
 
-      - job: clean_up_images
-        displayName: clean_up_images
-        dependsOn: deploy_nginx
-        steps:
-          - script: | #clean up images
-              chmod +x script/cleanup_images.sh
-              ./script/cleanup_images.sh
+      # - job: clean_up_images
+      #   displayName: clean_up_images
+      #   dependsOn: deploy_nginx
+      #   steps:
+      #     - script: | #clean up images
+      #         chmod +x script/cleanup_images.sh
+      #         ./script/cleanup_images.sh
 
-              
