@@ -41,7 +41,7 @@ stages:
 
       - job: build_nginx
         displayName: build_nginx
-        dependsOn: build_front_back
+        dependsOn: build_backend
         steps: 
         - script: |
             echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
