@@ -17,7 +17,8 @@ stages:
         steps:
         - script:
             git clone https://santos.viniciusmt:$(GITLAB_ACCESS_TOKEN)@gitlab.com/santos.viniciusmt/portfolio.git
-          displayName: 'Cloning GitLab repository'
+            cd myagent/_work/1/s
+          displayName: 'Cloning GitLab repository and move to work folder'
           env:
             GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)
 
