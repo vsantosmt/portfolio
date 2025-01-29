@@ -19,83 +19,63 @@ stages:
             git clone https://santos.viniciusmt:$(GITLAB_ACCESS_TOKEN)@gitlab.com/santos.viniciusmt/portfolio.git
           displayName: 'Cloning GitLab repository'
         - script:
-            cd myagent/_work/1/s
-          displayName: 'Moved to work folder'
+            pwd
+          displayName: 'Location'
           env:
             GITLAB_ACCESS_TOKEN: $(GITLAB_ACCESS_TOKEN)            
 
-      - job: build_frontend
-        displayName: build_frontend
-        dependsOn: clone_repo
-        steps: 
-        - script: |
-            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
-            docker build -t $(DOCKER_USERNAME)/portfolio-frontend:2.0 frontend/
-          displayName: 'Build frontend'
+#       - job: build_frontend
+#         displayName: build_frontend
+#         dependsOn: clone_repo
+#         steps: 
+#         - script: |
+#             echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+#             docker build -t $(DOCKER_USERNAME)/portfolio-frontend:2.0 frontend/
+#           displayName: 'Build frontend'
 
-      - job: build_backend
-        displayName: build_backend
-        dependsOn: build_frontend
-        steps: 
-        - script: |
-            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
-            docker build -t $(DOCKER_USERNAME)/portfolio-backend:2.0 backend/
-          displayName: 'Build backend'
+#       - job: build_backend
+#         displayName: build_backend
+#         dependsOn: build_frontend
+#         steps: 
+#         - script: |
+#             echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+#             docker build -t $(DOCKER_USERNAME)/portfolio-backend:2.0 backend/
+#           displayName: 'Build backend'
 
-      - job: build_nginx
-        displayName: build_nginx
-        dependsOn: build_backend
-        steps: 
-        - script: |
-            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
-            docker build -t $(DOCKER_USERNAME)/portfolio-nginx:2.0 nginx/
-          displayName: 'Build nginx'
+#       - job: build_nginx
+#         displayName: build_nginx
+#         dependsOn: build_backend
+#         steps: 
+#         - script: |
+#             echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+#             docker build -t $(DOCKER_USERNAME)/portfolio-nginx:2.0 nginx/
+#           displayName: 'Build nginx'
 
-      - job: push_images
-        displayName: push_images
-        dependsOn: build_nginx
-        steps: 
-        - script: |
-            echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
-            docker push $(DOCKER_USERNAME)/portfolio-frontend:2.0
-            docker push $(DOCKER_USERNAME)/portfolio-backend:2.0
-            docker push $(DOCKER_USERNAME)/portfolio-nginx:2.0
-          displayName: 'Push images'
+#       - job: push_images
+#         displayName: push_images
+#         dependsOn: build_nginx
+#         steps: 
+#         - script: |
+#             echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+#             docker push $(DOCKER_USERNAME)/portfolio-frontend:2.0
+#             docker push $(DOCKER_USERNAME)/portfolio-backend:2.0
+#             docker push $(DOCKER_USERNAME)/portfolio-nginx:2.0
+#           displayName: 'Push images'
 
-  - stage: deploy
-    jobs:
-      - job: clean_up_containers
-        displayName: clean_up_containers
-        steps:
-          - script: |
-              chmod +x script/remove_container.sh
-              ./script/remove_container.sh 
+#   - stage: deploy
+#     jobs:
+#       - job: clean_up_containers
+#         displayName: clean_up_containers
+#         steps:
+#           - script: |
+#               chmod +x script/remove_container.sh
+#               ./script/remove_container.sh 
 
-      - job: deploy
-        displayName: deploy_front_back
-        dependsOn: clean_up_containers
-        steps:
-          - script: 
-              docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:2.0
-              docker run -dti --name webserver-backend -p 5000:5000 vsantosmt/portfolio-backend:2.0
-              docker run -dti --name webserver-nginx -p 80:80 vsantosmt/portfolio-nginx:2.0
-
-      # - job: deploy_nginx
-      #   displayName: deploy_nginx
-      #   dependsOn: deploy_front_back
-      #   steps:
-      #     - script:
-      #         docker run -dti --name webserver-nginx -p 5173:80 vsantosmt/portfolio-nginx:2.0
-
-      # - job: clean_up_images
-      #   displayName: clean_up_images
-      #   dependsOn: deploy_nginx
-      #   steps:
-      #     - script: | #clean up images
-      #         chmod +x script/cleanup_images.sh
-      #         ./script/cleanup_images.sh
-
-
-
-
-      
+#       - job: deploy
+#         displayName: deploy_front_back
+#         dependsOn: clean_up_containers
+#         steps:
+#           - script: 
+#               docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:2.0
+#               docker run -dti --name webserver-backend -p 5000:5000 vsantosmt/portfolio-backend:2.0
+#               # docker run -dti --name webserver-nginx -p 80:80 vsantosmt/portfolio-nginx:2.0
