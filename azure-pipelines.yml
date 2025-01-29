@@ -94,8 +94,3 @@ stages:
       #     - script: | #clean up images
       #         chmod +x script/cleanup_images.sh
       #         ./script/cleanup_images.sh
-
-
-
-
-
