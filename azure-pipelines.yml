@@ -74,8 +74,8 @@ stages:
         steps:
           - script: 
               docker run -dti --name webserver-frontend -p 5173:80 vsantosmt/portfolio-frontend:2.0
-              docker run -dti --name webserver-backend -p 5173:80 vsantosmt/portfolio-backend:2.0
-              docker run -dti --name webserver-nginx -p 5173:80 vsantosmt/portfolio-nginx:2.0
+              docker run -dti --name webserver-backend -p 5000:5000 vsantosmt/portfolio-backend:2.0
+              docker run -dti --name webserver-nginx -p 80:80 vsantosmt/portfolio-nginx:2.0
 
       # - job: deploy_nginx
       #   displayName: deploy_nginx
