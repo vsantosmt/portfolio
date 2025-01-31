@@ -65,7 +65,7 @@ stages:
         displayName: clean_up_containers
         steps:
           - script: |
-              chmod +x script/remove_container.sh |
+              chmod +x script/remove_container.sh
               ./script/remove_container.sh 
 
       - job: deploy
