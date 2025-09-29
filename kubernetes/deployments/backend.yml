@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 1  # Número de réplicas de pods a serem criados
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: vsantosmt/portfolio-backend:3.0  # Substitua com a imagem Docker da sua aplicação
+        ports:
+        - containerPort: 5000  # Porta onde o container expõe a aplicação

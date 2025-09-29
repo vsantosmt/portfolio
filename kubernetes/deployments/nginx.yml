@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1  # Número de réplicas de pods a serem criados
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: vsantosmt/portfolio-nginx:3.0  # Substitua com a imagem Docker da sua aplicação
+        ports:
+        - containerPort: 80
+        - containerPort: 443

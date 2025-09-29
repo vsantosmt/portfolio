@@ -30,3 +30,6 @@ infra/gcp/.terraform
 infra/gcp/.terraform.lock.hcl
 
 cloudflare
+
+infra/azure/.terraform
+infra/azure/.terraform.lock.hcl
