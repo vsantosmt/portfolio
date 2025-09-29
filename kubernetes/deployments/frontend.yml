@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  replicas: 1  # Número de réplicas de pods a serem criados
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: vsantosmt/portfolio-frontend:3.0  # Substitua com a imagem Docker da sua aplicação
+        ports:
+        - containerPort: 80  # Porta onde o container expõe a aplicação
