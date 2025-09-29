@@ -12,14 +12,14 @@ env:
 
 jobs:
   build_frontend:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - uses: actions/checkout@v4
       - name: Build Frontend
         run: docker build -t vsantosmt/portfolio-frontend:${{ env.VERSION }} ./frontend
 
   build_backend:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
     needs: build_frontend
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
         run: docker build -t vsantosmt/portfolio-backend:${{ env.VERSION }} ./backend
 
   build_nginx:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
     needs: build_backend
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
         run: docker build -t vsantosmt/portfolio-nginx:${{ env.VERSION }} ./nginx
 
   push_image:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
     needs: [build_frontend, build_backend, build_nginx]
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
           docker push vsantosmt/portfolio-nginx:${{ env.VERSION }}
 
   execute_container:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
     needs: push_image
     steps:
       - uses: actions/checkout@v4
@@ -63,7 +63,7 @@ jobs:
           docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:${{ env.VERSION }}
 
   cleanup_images:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
     needs: execute_container
     steps:
       - uses: actions/checkout@v4
