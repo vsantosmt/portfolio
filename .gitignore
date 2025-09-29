@@ -34,4 +34,4 @@ cloudflare
 infra/azure/.terraform
 infra/azure/.terraform.lock.hcl
 
-privatekey.key
+privatekey.key #
