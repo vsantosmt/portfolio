@@ -1,0 +1,74 @@
+name: CI/CD Portfolio
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - qa
+
+env:
+  VERSION: "2.0"
+  PROJECT_TAG: "port-gcp"
+
+jobs:
+  build_frontend:
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Frontend
+        run: docker build -t vsantosmt/portfolio-frontend:${{ env.VERSION }} ./frontend
+
+  build_backend:
+    runs-on: [self-hosted, Linux, X64]
+    needs: build_frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Backend
+        run: docker build -t vsantosmt/portfolio-backend:${{ env.VERSION }} ./backend
+
+  build_nginx:
+    runs-on: [self-hosted, Linux, X64]
+    needs: build_backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Nginx
+        run: docker build -t vsantosmt/portfolio-nginx:${{ env.VERSION }} ./nginx
+
+  push_image:
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build_frontend, build_backend, build_nginx]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Push Images
+        run: |
+          docker push vsantosmt/portfolio-frontend:${{ env.VERSION }}
+          docker push vsantosmt/portfolio-backend:${{ env.VERSION }}
+          docker push vsantosmt/portfolio-nginx:${{ env.VERSION }}
+
+  execute_container:
+    runs-on: [self-hosted, Linux, X64]
+    needs: push_image
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove old containers
+        run: |
+          chmod +x script/remove_container.sh
+          ./script/remove_container.sh
+      - name: Run Containers
+        run: |
+          docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:${{ env.VERSION }}
+          docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:${{ env.VERSION }}
+          docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:${{ env.VERSION }}
+
+  cleanup_images:
+    runs-on: [self-hosted, Linux, X64]
+    needs: execute_container
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cleanup Images
+        run: |
+          chmod +x script/cleanup_images.sh
+          ./script/cleanup_images.sh
