@@ -1,9 +1,22 @@
-FROM python:3.9-slim
-WORKDIR /usr/src/app
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+# Dependências
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir gunicorn
+
+# Código
 COPY . .
-ENV FLASK_APP=backend.py
-ENV FLASK_ENV=production
+
+# Porta da app
 EXPOSE 5000
-CMD ["flask", "run", "--host=0.0.0.0"]
+
+# Caso seu Flask esteja no arquivo backend.py e a instância seja "app"
+# Ajuste "backend:app" se seu módulo/variável tiver outro nome.
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--threads", "4", "--timeout", "60", "backend:app"]
