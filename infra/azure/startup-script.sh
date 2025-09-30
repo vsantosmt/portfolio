@@ -10,6 +10,8 @@ sudo usermod -aG docker ubuntu
 sudo systemctl enable docker
 sudo systemctl start docker
 
+sudo docker network create proxy
+
 #gitlab runner
 sudo apt update -y && sudo apt upgrade -y
 sudo apt install -y curl ca-certificates

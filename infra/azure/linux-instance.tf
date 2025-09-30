@@ -41,7 +41,7 @@ resource "azurerm_linux_virtual_machine" "vm-devops" {
   size                  = "Standard_D2s_v3"
   admin_username        = "oci"
   network_interface_ids = [azurerm_network_interface.nic-devops.id]
-  custom_data           = base64encode(file("./script/install_docker_test.sh")) //script para inicializar apos criacao da vm
+  custom_data           = base64encode(file("./startup-script.sh")) //script para inicializar apos criacao da vm
 
   admin_ssh_key {
     username   = "oci"
@@ -86,6 +86,58 @@ resource "azurerm_network_security_group" "nsg-devops" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  # Backend (5000)
+  security_rule {
+    name                       = "allow-backend"
+    priority                   = 1010
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "5000"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  # Frontend (5173)
+  security_rule {
+    name                       = "allow-frontend"
+    priority                   = 1020
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "5173"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  # Nginx HTTP (80)
+  security_rule {
+    name                       = "allow-http"
+    priority                   = 1030
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  # Nginx HTTPS (443)
+  security_rule {
+    name                       = "allow-https"
+    priority                   = 1040
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
