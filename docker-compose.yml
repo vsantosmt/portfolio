@@ -6,8 +6,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: webserver-backend
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
     networks:
       - proxy
     restart: unless-stopped
