@@ -1,4 +1,14 @@
+# Usa a imagem oficial do Nginx
 FROM nginx:alpine
 
-# Copia a config completa pro Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+# Remove a configuração padrão
+RUN rm -f /etc/nginx/conf.d/default.conf
+
+# Copia o arquivo de configuração customizado
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expõe a porta 80
+EXPOSE 80
+
+# Mantém o Nginx rodando em foreground
+CMD ["nginx", "-g", "daemon off;"]
