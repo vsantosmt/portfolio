@@ -1,4 +1,4 @@
-name: CI/CD Portfolio
+name: 🚀 CI/CD Portfolio
 
 on:
   push:
@@ -12,63 +12,95 @@ env:
   PROJECT_TAG: "port-gcp"
 
 jobs:
+  # 🧩 Build Frontend
   build_frontend:
     runs-on: [self-hosted, Linux, X64]
     steps:
       - uses: actions/checkout@v4
-      - name: Build Frontend
+      - name: 🏗️ Build Frontend
         run: docker build -t vsantosmt/portfolio-frontend:${{ env.VERSION }} ./frontend
 
+  # 🧩 Build Backend
   build_backend:
     runs-on: [self-hosted, Linux, X64]
     needs: build_frontend
     steps:
       - uses: actions/checkout@v4
-      - name: Build Backend
+      - name: 🏗️ Build Backend
         run: docker build -t vsantosmt/portfolio-backend:${{ env.VERSION }} ./backend
 
+  # 🧩 Build Nginx
   build_nginx:
     runs-on: [self-hosted, Linux, X64]
     needs: build_backend
     steps:
       - uses: actions/checkout@v4
-      - name: Build Nginx
+      - name: 🏗️ Build Nginx
         run: docker build -t vsantosmt/portfolio-nginx:${{ env.VERSION }} ./nginx
 
+  # 🐳 Push Images to Docker Hub
   push_image:
     runs-on: [self-hosted, Linux, X64]
     needs: [build_frontend, build_backend, build_nginx]
     steps:
       - uses: actions/checkout@v4
-      - name: Login to Docker Hub
+      - name: 🔐 Login to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-      - name: Push Images
+      - name: 📤 Push Images
         run: |
           docker push vsantosmt/portfolio-frontend:${{ env.VERSION }}
           docker push vsantosmt/portfolio-backend:${{ env.VERSION }}
           docker push vsantosmt/portfolio-nginx:${{ env.VERSION }}
 
+  # 🚀 Deploy Containers
   execute_container:
     runs-on: [self-hosted, Linux, X64]
     needs: push_image
     steps:
       - uses: actions/checkout@v4
-      - name: Remove old containers
+
+      - name: 🧱 Ensure Docker network exists
+        run: |
+          docker network inspect proxy >/dev/null 2>&1 || docker network create proxy
+
+      - name: 📥 Pull latest images
+        run: |
+          docker pull vsantosmt/portfolio-frontend:${{ env.VERSION }}
+          docker pull vsantosmt/portfolio-backend:${{ env.VERSION }}
+          docker pull vsantosmt/portfolio-nginx:${{ env.VERSION }}
+
+      - name: 🧹 Remove old containers
         run: |
           chmod +x script/remove_container.sh
           ./script/remove_container.sh
-      - name: Run Containers
-        run: |
-          docker run -dti --name webserver-frontend -p 5173:80 --network proxy vsantosmt/portfolio-frontend:${{ env.VERSION }}
-          docker run -dti --name webserver-backend -p 5000:5000 --network proxy vsantosmt/portfolio-backend:${{ env.VERSION }}
-          docker run -dti --name webserver-nginx -p 80:80 -p 443:443 --network proxy vsantosmt/portfolio-nginx:${{ env.VERSION }}
 
+      - name: 🚀 Run containers
+        run: |
+          docker run -dti --restart always \
+            --name webserver-frontend \
+            --network proxy \
+            -p 5173:80 \
+            vsantosmt/portfolio-frontend:${{ env.VERSION }}
+
+          docker run -dti --restart always \
+            --name webserver-backend \
+            --network proxy \
+            -p 5000:5000 \
+            vsantosmt/portfolio-backend:${{ env.VERSION }}
+
+          docker run -dti --restart always \
+            --name webserver-nginx \
+            --network proxy \
+            -p 80:80 -p 443:443 \
+            vsantosmt/portfolio-nginx:${{ env.VERSION }}
+
+  # 🧹 Cleanup old images
   cleanup_images:
     runs-on: [self-hosted, Linux, X64]
     needs: execute_container
     steps:
       - uses: actions/checkout@v4
-      - name: Cleanup Images
+      - name: 🧼 Cleanup Images
         run: |
           chmod +x script/cleanup_images.sh
           ./script/cleanup_images.sh
