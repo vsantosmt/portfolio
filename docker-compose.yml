@@ -1,42 +1,42 @@
-version: '3.8'
+version: '3'
 
 services:
+  # Serviço do Backend (Flask)
   backend:
     build:
-      context: ./backend
+      context: ./backend  # Pasta onde está o Dockerfile do Flask
       dockerfile: Dockerfile
     container_name: webserver-backend
     ports:
-      - "5000:5000"
+      - "5000:5000"  # Mapeando a porta 5000 do host para a porta 5000 do contêiner
     networks:
       - proxy
-    restart: unless-stopped
 
+  # Serviço do Frontend (Vite)
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend  # Pasta onde está o Dockerfile do Vite
       dockerfile: Dockerfile
     container_name: webserver-frontend
     ports:
-      - "80:80"
+      - "5173:80"  # Mapeando a porta 5173 do host para a porta 80 do contêiner
     networks:
       - proxy
-    restart: unless-stopped
 
   nginx:
     build:
       context: ./nginx
+      dockerfile: Dockerfile
     container_name: webserver-nginx
-    ports:
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html
+    ports: 
       - "80:80"
       - "443:443"
     networks:
       - proxy
-    depends_on:
-      - backend
-      - frontend
-    restart: unless-stopped
 
 networks:
   proxy:
     name: proxy
+
