@@ -4,9 +4,8 @@ FROM nginx:alpine
 # Remove a configuração padrão
 RUN rm -f /etc/nginx/conf.d/default.conf
 
-# Copia os arquivos de configuração
+# Copia apenas o arquivo de configuração principal
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Cria diretórios para logs
 RUN mkdir -p /var/log/nginx
