@@ -20,11 +20,3 @@ sudo apt install -y gitlab-runner
 sudo systemctl enable gitlab-runner
 sudo systemctl start gitlab-runner
 
-#k3s
-sudo apt update -y && sudo apt upgrade -y
-sudo apt install -y curl
-curl -sfL https://get.k3s.io | sh -
-sudo mkdir -p ~/.kube
-sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-sudo chown $USER:$USER ~/.kube/config
-
