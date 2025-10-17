@@ -74,6 +74,31 @@ jobs:
           chmod +x script/remove_container.sh
           ./script/remove_container.sh
 
+      - name: 🏗️ Prepare frontend files
+        run: |
+          # Limpa diretório anterior se existir
+          sudo rm -rf /tmp/frontend-dist
+          mkdir -p /tmp/frontend-dist
+
+          # Cria container temporário do frontend apenas para extrair arquivos
+          docker create --name webserver-frontend-temp vsantosmt/portfolio-frontend:${{ env.VERSION }}
+          
+          # Copia arquivos do frontend
+          docker cp webserver-frontend-temp:/usr/share/nginx/html/. /tmp/frontend-dist/
+          
+          # Remove container temporário
+          docker rm webserver-frontend-temp
+          
+          # Verifica se os arquivos foram copiados corretamente
+          echo "=== Arquivos copiados ==="
+          ls -la /tmp/frontend-dist/
+          
+          # Verifica se index.html existe
+          if [ ! -f "/tmp/frontend-dist/index.html" ]; then
+            echo "ERROR: index.html não encontrado!"
+            exit 1
+          fi
+
       - name: 🚀 Run containers
         run: |
           # Backend primeiro
@@ -83,22 +108,6 @@ jobs:
             -p 5000:5000 \
             vsantosmt/portfolio-backend:${{ env.VERSION }}
 
-          # Frontend (temporário para copiar arquivos)
-          docker run -dti --restart always \
-            --name webserver-frontend-temp \
-            --network proxy \
-            vsantosmt/portfolio-frontend:${{ env.VERSION }}
-
-          # Aguarda frontend construir
-          sleep 3
-
-          # Copia arquivos do frontend para volume temporário
-          docker cp webserver-frontend-temp:/usr/share/nginx/html /tmp/frontend-dist
-
-          # Remove container temporário do frontend
-          docker stop webserver-frontend-temp
-          docker rm webserver-frontend-temp
-
           # Nginx com os arquivos estáticos do frontend
           docker run -dti --restart always \
             --name webserver-nginx \
@@ -106,6 +115,22 @@ jobs:
             -v /tmp/frontend-dist:/usr/share/nginx/html:ro \
             -p 80:80 -p 443:443 \
             vsantosmt/portfolio-nginx:${{ env.VERSION }}
+
+          # Aguarda nginx inicializar
+          sleep 5
+
+          # Testa se nginx está funcionando
+          echo "=== Testando nginx internamente ==="
+          docker exec webserver-nginx ls -la /usr/share/nginx/html/
+          docker exec webserver-nginx cat /usr/share/nginx/html/index.html | head -10
+          
+          echo "=== Testando conectividade ==="
+          docker exec webserver-nginx wget -q -O - http://localhost/ | head -10 || echo "Falha no teste interno"
+
+      - name: 🔍 Debug final
+        run: |
+          chmod +x script/debug_nginx.sh
+          ./script/debug_nginx.sh
 
   # 🧹 Cleanup old images
   cleanup_images:
