@@ -12,11 +12,3 @@ sudo systemctl start docker
 
 sudo docker network create proxy
 
-#gitlab runner
-sudo apt update -y && sudo apt upgrade -y
-sudo apt install -y curl ca-certificates
-curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
-sudo apt install -y gitlab-runner
-sudo systemctl enable gitlab-runner
-sudo systemctl start gitlab-runner
-
