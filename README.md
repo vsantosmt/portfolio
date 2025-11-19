@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌟 Portfolio - Vinícius Santos
 
 Um portfolio moderno e responsivo desenvolvido com React + TypeScript (frontend) e Flask (backend), deployado com Docker e Kubernetes.
