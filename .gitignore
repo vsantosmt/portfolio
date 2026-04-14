@@ -34,4 +34,8 @@ cloudflare
 infra/azure/.terraform
 infra/azure/.terraform.lock.hcl
 
-privatekey.key #
+*.key
+*.pub
+
+# Private keys - NEVER commit these  
+privatekey.key
