@@ -39,3 +39,4 @@ infra/azure/.terraform.lock.hcl
 
 # Private keys - NEVER commit these  
 privatekey.key
+*.backup
